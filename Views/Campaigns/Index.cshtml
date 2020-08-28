@@ -1,0 +1,90 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+
+@{
+    ViewData["Title"] = "Get Started";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container vh100">
+    <main role="main" class="pb-3">
+        <h1>Campaigns</h1>
+
+        <br />
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <div class="container-fluid padding">
+                <div class="row text-center padding">
+                    <div class="col-xs-12 col-sm-6 col-md-4">
+                        <h3>Need to start a new campaign?</h3>
+                        <a class="btn btn-primary btn-lg" asp-area="" asp-controller="Campaigns" asp-action="Upsert">Start a Campaign</a>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-4">
+                        <h3>Need to access a Campaign?</h3>
+                        <a class="btn btn-primary btn-lg" asp-area="" asp-controller="Campaigns" asp-action="Campaigns">Campaigns</a>
+                    </div>
+                    <div class="col-sm-12 col-md-4">
+                        <h3>Does a user need access to report on your campaigns?</h3>
+                        <a class="btn btn-primary btn-lg" asp-area="" asp-controller="Campaigns" asp-action="AddUserToCampaign">Add User</a>
+                    </div>
+                </div>
+                <hr class="my-4">
+            </div>
+        }
+        else
+        {
+            <div class="container-fluid padding">
+                <div class="row padding">
+                    <div class="col-lg-6">
+                        <h2>Welcome to the campaigns section of Metrict.</h2>
+                        <p>Please login to get started.</p>
+                        <br>
+                        <a class="btn btn-primary btn-lg" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                    </div>
+                    <div class="col-lg-6">
+                        <h2>Welcome to the campaigns section of Metrict.</h2>
+                        <p>Please login to get started.</p>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @*<div class="container row p-0 m-0">
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <div class="row">
+                    <div class="col-4 col-md-offset-2">
+                        <h1 class="display-4">Need to start a new campaign?</h1>
+                        <h4><a class="page-link text-dark" asp-area="" asp-controller="Campaigns" asp-action="Upsert">New Campaign</a></h4>
+                    </div>
+                    <div class="col-4 col-md-offset-2">
+                        <h1 class="display-4">Need to access a Campaign?</h1>
+                        <h4><a class="page-link text-dark" asp-area="" asp-controller="Campaigns" asp-action="Campaigns">My Campaigns</a></h4>
+                    </div>
+                    <div class="col-4 col-md-offset-2">
+                        <h1 class="display-4">Does a user need access to report on your campaigns?</h1>
+                        <h4><a class="page-link text-dark" asp-area="" asp-controller="Campaigns" asp-action="Campaigns">Add Users to Your Campaigns</a></h4>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="row">
+                    <div class="col-6 col-md-offset-2">
+                        <h1 class="display-4">Please login to access features</h1>
+                        <h4><a class="page-link text-dark" asp-area="" asp-controller="Users" asp-action="Login">Login</a></h4>
+                    </div>
+                    <div class="col-6 col-md-offset-2">
+                        <h1 class="display-4">Experiencing Issues?</h1>
+                        <p>
+                            If you are experiencing issues logging in, but are able to log into your work account in other places, please contact your administrator.
+                            This version of Metrict uses Active Directory to validate credentials and accounts are managed by administrators.
+                        </p>
+                    </div>
+                </div>
+            }
+        </div>*@
+    </main>
+</div>

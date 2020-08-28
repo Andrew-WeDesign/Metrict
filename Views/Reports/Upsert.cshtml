@@ -1,0 +1,220 @@
+﻿@model Metrict.Models.Report
+
+@{
+    ViewData["Title"] = "Upsert";
+}
+
+<div class="container vh100">
+    <main role="main" class="pb-3">
+        <h1>Edit Report</h1>
+
+        <br />
+        <h2 class="text-info">@(Model.Id != 0 ? "Edit" : "Create") Report</h2>
+        <br />
+
+        <div class="border container" style="padding:30px;">
+            <form asp-controller="Reports" asp-action="Upsert" method="post">
+                @if (Model.Id != 0)
+                {
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="SubmissionDate" />
+                    <input type="hidden" asp-for="CampaignId" value="@Html.DisplayFor(model => model.CampaignId)" />
+                }
+                <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+                @*<div class="form-group row">
+                    <div class="col-3">
+                        <label>Campaign Name</label>
+                    </div>
+                    <div class="col-6">
+                        <select asp-for="CampaignId" asp-items="@(new SelectList(ViewBag.UserReportsList, "CampaignId", "CampaignName" ))"></select>
+                    </div>
+                </div>*@
+                <div class="form-group row">
+                    <div class="col-3">
+                        <label asp-for="DataColumnNumber1"></label>
+                    </div>
+                    <div class="col-6">
+                        <input asp-for="DataColumnNumber1" class="form-control" />
+                        <span asp-validation-for="DataColumnNumber1" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-3">
+                        <label asp-for="DataColumnNumber2"></label>
+                    </div>
+                    <div class="col-6">
+                        <input asp-for="DataColumnNumber2" class="form-control" />
+                        <span asp-validation-for="DataColumnNumber2" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-3">
+                        <label asp-for="DataColumnNumber3"></label>
+                    </div>
+                    <div class="col-6">
+                        <input asp-for="DataColumnNumber3" class="form-control" />
+                        <span asp-validation-for="DataColumnNumber3" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-3">
+                        <label asp-for="DataColumnNumber4"></label>
+                    </div>
+                    <div class="col-6">
+                        <input asp-for="DataColumnNumber4" class="form-control" />
+                        <span asp-validation-for="DataColumnNumber4" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-3">
+                        <label asp-for="DataColumnNumber5"></label>
+                    </div>
+                    <div class="col-6">
+                        <input asp-for="DataColumnNumber5" class="form-control" />
+                        <span asp-validation-for="DataColumnNumber5" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-3">
+                        <label asp-for="DataColumnNumber6"></label>
+                    </div>
+                    <div class="col-6">
+                        <input asp-for="DataColumnNumber6" class="form-control" />
+                        <span asp-validation-for="DataColumnNumber6" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-3">
+                        <label asp-for="DataColumnNumber7"></label>
+                    </div>
+                    <div class="col-6">
+                        <input asp-for="DataColumnNumber7" class="form-control" />
+                        <span asp-validation-for="DataColumnNumber7" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-3">
+                        <label asp-for="DataColumnNumber9"></label>
+                    </div>
+                    <div class="col-6">
+                        <input asp-for="DataColumnNumber9" class="form-control" />
+                        <span asp-validation-for="DataColumnNumber9" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-3">
+                        <label asp-for="DataColumnNumber10"></label>
+                    </div>
+                    <div class="col-6">
+                        <input asp-for="DataColumnNumber10" class="form-control" />
+                        <span asp-validation-for="DataColumnNumber10" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-3">
+                        <label asp-for="DataColumnTextA"></label>
+                    </div>
+                    <div class="col-6">
+                        <input asp-for="DataColumnTextA" class="form-control" />
+                        <span asp-validation-for="DataColumnTextA" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-3">
+                        <label asp-for="DataColumnTextB"></label>
+                    </div>
+                    <div class="col-6">
+                        <input asp-for="DataColumnTextB" class="form-control" />
+                        <span asp-validation-for="DataColumnTextB" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-3">
+                        <label asp-for="DataColumnTextC"></label>
+                    </div>
+                    <div class="col-6">
+                        <input asp-for="DataColumnTextC" class="form-control" />
+                        <span asp-validation-for="DataColumnTextC" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-3">
+                        <label asp-for="DataColumnTextD"></label>
+                    </div>
+                    <div class="col-6">
+                        <input asp-for="DataColumnTextD" class="form-control" />
+                        <span asp-validation-for="DataColumnTextD" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-3">
+                        <label asp-for="DataColumnTextE"></label>
+                    </div>
+                    <div class="col-6">
+                        <input asp-for="DataColumnTextE" class="form-control" />
+                        <span asp-validation-for="DataColumnTextE" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-3">
+                        <label asp-for="DataColumnTextF"></label>
+                    </div>
+                    <div class="col-6">
+                        <input asp-for="DataColumnTextF" class="form-control" />
+                        <span asp-validation-for="DataColumnTextF" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-3">
+                        <label asp-for="DataColumnTextG"></label>
+                    </div>
+                    <div class="col-6">
+                        <input asp-for="DataColumnTextG" class="form-control" />
+                        <span asp-validation-for="DataColumnTextG" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-3">
+                        <label asp-for="DataColumnTextH"></label>
+                    </div>
+                    <div class="col-6">
+                        <input asp-for="DataColumnTextH" class="form-control" />
+                        <span asp-validation-for="DataColumnTextH" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-3">
+                        <label asp-for="DataColumnTextI"></label>
+                    </div>
+                    <div class="col-6">
+                        <input asp-for="DataColumnTextI" class="form-control" />
+                        <span asp-validation-for="DataColumnTextI" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-3">
+                        <label asp-for="DataColumnTextJ"></label>
+                    </div>
+                    <div class="col-6">
+                        <input asp-for="DataColumnTextJ" class="form-control" />
+                        <span asp-validation-for="DataColumnTextJ" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-3 offset-3">
+                        <button type="submit" class="btn btn-primary form-control">
+                            @(Model.Id != 0 ? "Update" : "Create")
+                        </button>
+                    </div>
+                    <div class="col-3">
+                        <a asp-action="Index" class="btn btn-success form-control">Back to List</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        @section Scripts{
+            <partial name="_ValidationScriptsPartial" />
+        }
+    </main>
+</div>

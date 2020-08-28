@@ -1,0 +1,65 @@
+﻿@model Metrict.Models.Campaign
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+</head>
+
+<body>
+    <div class="container vh100">
+        <main role="main" class="pb-3">
+            <h1>Dashboard</h1>
+
+            <p>
+                Current user count: @ViewBag.userCount
+            </p>
+
+            <p>
+                Data for week starting: @ViewBag.dateTimeWeekStart
+            </p>
+
+            <p>
+                Number of reports counted: @ViewBag.reportDataCount
+            </p>
+
+            <a href="/Campaigns/ManageCampaignUser?id=@Model.Id" class='btn btn-success text-white' style='cursor:pointer; width:100px;'>
+                Manage Members
+            </a>
+            <a href="/Campaigns/NewCampaignUser?id=@Model.Id" class='btn btn-success text-white' style='cursor:pointer; width:100px;'>
+                Add New Members
+            </a>
+
+            <div id="chart_container">
+                <canvas id="bar_chart">
+                </canvas>
+            </div>
+        </main>
+    </div>
+
+    <script>
+
+        var reportData = @Html.Raw(Json.Serialize(ViewBag.reportData));
+        var lbls = @Html.Raw(Json.Serialize(ViewBag.colNames));
+
+        var ctx = document.getElementById('bar_chart').getContext('2d');
+        var barChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: lbls,
+                datasets: [{
+                    label: "Number of Activities",
+                    data: reportData,
+                    backgroundColor: ["rgba(242,166,54,.5)", "rgba(145,65,72,.5)", "rgba(74,25,92,.5)"],
+                    borderColor: [["rgba(242,166,54)", "rgba(145,65,72)", "rgba(74,25,92)"]],
+                    borderWidth: 1
+                }]
+            }
+        });
+
+    </script>
+
+
+</body>

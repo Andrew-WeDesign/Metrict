@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "Campaigns";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container vh100">
+    <main role="main" class="pb-3">
+        <br />
+        <div class="container row p-0 m-0">
+            <div class="col-6">
+                <h2 class="text-info">Campaign List</h2>
+            </div>
+            <div>
+                <a asp-action="Upsert" asp-controller="Campaigns" class="btn btn-info form-control text-white">Start a New Campaign</a>
+            </div>
+            <div class="col-12 border p-3">
+                <table id="DT_load" class="table table-striped table-bordered" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Start Date</th>
+                            <th>Active</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+
+        @section Scripts{
+            <script src="~/js/campaignList.js"></script>
+        }
+        </main>
+</div>

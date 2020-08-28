@@ -1,0 +1,45 @@
+﻿@*@model Metrict.Models.CampaignViewModels.CampaignReportData*@
+
+@{
+    ViewData["Title"] = "BarGraph";
+}
+
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+</head>
+
+<body>
+    <div class="container">
+        <main role="main" class="pb-3">
+
+            <h1>BarGraph</h1>
+
+            <div id="chart_container">
+                <canvas id="bar_chart">
+                </canvas>
+            </div>
+
+            <script>
+
+            var userCount = @Html.Raw(Json.Serialize(ViewBag.UserCount));
+            var lbls = ['A', 'B', 'C'];
+
+            var ctx = document.getElementById('bar_chart').getContext('2d');
+            var barChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: lbls,
+                    datasets: [{
+                        label: "User Count",
+                        data: userCount,
+                        backgroundColor: ["rgba(242,166,54,.5)", "rgba(145,65,72,.5)", "(74,25,92,.5)"],
+                        borderColor: [["rgba(242,166,54)", "rgba(145,65,72)", "(74,25,92)"]],
+                        borderWidth: 1
+                    }]
+                }
+            });
+
+            </script>
+        </main>
+    </div>
+</body>

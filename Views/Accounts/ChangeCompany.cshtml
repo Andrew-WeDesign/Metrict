@@ -1,0 +1,39 @@
+﻿@model Metrict.Models.ApplicationUser
+
+@{
+    ViewData["Title"] = "ChangeCompany";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>ChangeCompany</h1>
+
+<div class="border container" style="padding:30px;">
+    <form asp-action="ChangeCompany" method="post">
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="UserRole" />
+        <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+        <div class="form-group row">
+            <div class="col-3">
+                <label asp-for="Company"></label>
+            </div>
+            <div class="col-6">
+                <input asp-for="Company" class="form-control" />
+                <span asp-validation-for="Company" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-3 offset-3">
+                <button type="submit" class="btn btn-primary form-control">
+                    Update
+                </button>
+            </div>
+            <div class="col-3">
+                <a asp-action="Index" class="btn btn-success form-control">Back to account home</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

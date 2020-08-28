@@ -1,0 +1,86 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+
+@{
+    ViewData["Title"] = "Get Started";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container vh100">
+    <main role="main" class="pb-3">
+        <h1>Reports</h1>
+
+        <br />
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <div class="container-fluid padding">
+                <div class="row text-center padding">
+                    <div class="col-lg-6">
+                        <h3>Need to log your daily report?</h3>
+                        <a class="btn btn-primary btn-lg" asp-area="" asp-controller="Reports" asp-action="StartReport">Start a new report</a>
+                    </div>
+                    <div class="col-lg-6">
+                        <h3>Need to view a report?</h3>
+                        <a class="btn btn-primary btn-lg" asp-area="" asp-controller="Reports" asp-action="Reports">Reports</a>
+                    </div>
+                </div>
+                <hr class="my-4">
+            </div>
+        }
+        else
+        {
+            <div class="container-fluid padding">
+                <div class="row padding">
+                    <div class="col-lg-6">
+                        <h2>Welcome to the reports section of Metrict.</h2>
+                        <p>Please login to get started.</p>
+                        <br>
+                        <a class="btn btn-primary btn-lg" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                    </div>
+                    <div class="col-lg-6">
+                        <h2>Welcome to the reports section of Metrict.</h2>
+                        <p>Please login to get started.</p>
+                    </div>
+                </div>
+            </div>
+        }
+
+
+
+
+
+        @*<div class="container row p-0 m-0">
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <div class="row">
+                    <div class="col-6 col-md-offset-2">
+                        <h1 class="display-4">Need to log your daily report?</h1>
+                        <h4><a class="page-link text-dark" asp-area="" asp-controller="Reports" asp-action="StartReport">Start a new report</a></h4>
+                    </div>
+                    <div class="col-6 col-md-offset-2">
+                        <h1 class="display-4">Need to view a report?</h1>
+                        <h4><a class="page-link text-dark" asp-area="" asp-controller="Reports" asp-action="Reports">My Reports</a></h4>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="row">
+                    <div class="col-6 col-md-offset-2">
+                        <h1 class="display-4">Please login to access features</h1>
+                        <h4><a class="page-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a></h4>
+                    </div>
+                    <div class="col-6 col-md-offset-2">
+                        <h1 class="display-4">Experiencing Issues?</h1>
+                        <p>
+                            If you are experiencing issues logging in, but are able to log into your work account in other places, please contact your administrator.
+                            This version of Metrict uses Active Directory to validate credentials and accounts are managed by administrators.
+                        </p>
+                    </div>
+                </div>
+            }
+        </div>*@
+    </main>
+</div>

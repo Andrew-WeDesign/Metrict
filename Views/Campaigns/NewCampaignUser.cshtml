@@ -1,0 +1,30 @@
+﻿@model Metrict.Models.CampaignUser
+
+@{
+    ViewData["Title"] = "New Campaign User";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container vh100">
+    <main role="main" class="pb-3">
+        <h1>Add a user to @ViewBag.nameOfCampaign</h1>
+
+        <div>
+            <form asp-action="NewCampaignUser" method="post">
+                <input type="hidden" asp-for="CampaignId" value="@ViewBag.IdCampaign" />
+
+                <select class="selectpicker form-control" asp-for="ApplicationUserId" asp-items="@(new SelectList(ViewBag.ListOfUsers, "Id", "UserName"))"></select>
+
+                <input type="submit" value="Add New Member" />
+            </form>
+        </div>
+
+        @section Scripts{
+            <script>
+                $(function () {
+                    $(".selectpicker").chosen();
+                });
+            </script>
+        }
+    </main>
+</div>

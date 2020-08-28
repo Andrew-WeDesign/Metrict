@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "Reports";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container vh100">
+    <main role="main" class="pb-3">
+        <h1>Reports</h1>
+        <br />
+        <div class="container row p-0 m-0">
+            <div class="col-6">
+                <h2 class="text-info">Report List</h2>
+            </div>
+            <div class="col-12 border p-3">
+                <table id="DT_load" class="table table-striped table-bordered" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Campaign Name</th>
+                            <th>Submission Date</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+
+        @section Scripts{
+            <script src="~/js/reportList.js"></script>
+        }
+    </main>
+</div>
