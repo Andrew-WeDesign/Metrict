@@ -1,3 +1,7 @@
 ﻿$("#myReports").click(function () {
-    $("#main").load("/Reports/Reports");
+    $("#main").load("/Dashboard/Reports");
+});
+
+$("#myCampaigns").click(function () {
+    $("#main").load("/Dashboard/Campaigns");
 });

@@ -1,0 +1,234 @@
+﻿@model Metrict.Models.ReportViewModels.CampaignReportData
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ReportDetails</title>
+</head>
+<body>
+    <h1>Details</h1>
+
+    <div>
+        <h4>Report</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Reports.ApplicationUserName)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Reports.ApplicationUserName)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Campaigns.Name)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Reports.CampaignName)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Reports.SubmissionDate)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Reports.SubmissionDate)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Reports.LastEditDate)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Reports.LastEditDate)
+            </dd>
+            @if (Model.Campaigns.DataColumnNumber1Title != null)
+            {
+                <dt class="col-sm-2">
+                    @Html.DisplayFor(model => model.Campaigns.DataColumnNumber1Title)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Reports.DataColumnNumber1)
+                </dd>
+            }
+
+            @if (Model.Campaigns.DataColumnNumber2Title != null)
+            {
+                <dt class="col-sm-2">
+                    @Html.DisplayFor(model => model.Campaigns.DataColumnNumber2Title)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Reports.DataColumnNumber2)
+                </dd>
+            }
+            @if (Model.Campaigns.DataColumnNumber3Title != null)
+            {
+                <dt class="col-sm-2">
+                    @Html.DisplayFor(model => model.Campaigns.DataColumnNumber3Title)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Reports.DataColumnNumber3)
+                </dd>
+            }
+            @if (Model.Campaigns.DataColumnNumber4Title != null)
+            {
+                <dt class="col-sm-2">
+                    @Html.DisplayFor(model => model.Campaigns.DataColumnNumber4Title)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Reports.DataColumnNumber4)
+                </dd>
+            }
+            @if (Model.Campaigns.DataColumnNumber5Title != null)
+            {
+                <dt class="col-sm-2">
+                    @Html.DisplayFor(model => model.Campaigns.DataColumnNumber5Title)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Reports.DataColumnNumber5)
+                </dd>
+            }
+            @if (Model.Campaigns.DataColumnNumber6Title != null)
+            {
+                <dt class="col-sm-2">
+                    @Html.DisplayFor(model => model.Campaigns.DataColumnNumber6Title)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Reports.DataColumnNumber6)
+                </dd>
+            }
+            @if (Model.Campaigns.DataColumnNumber7Title != null)
+            {
+                <dt class="col-sm-2">
+                    @Html.DisplayFor(model => model.Campaigns.DataColumnNumber7Title)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Reports.DataColumnNumber7)
+                </dd>
+            }
+            @if (Model.Campaigns.DataColumnNumber8Title != null)
+            {
+                <dt class="col-sm-2">
+                    @Html.DisplayFor(model => model.Campaigns.DataColumnNumber8Title)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Reports.DataColumnNumber8)
+                </dd>
+            }
+            @if (Model.Campaigns.DataColumnNumber9Title != null)
+            {
+                <dt class="col-sm-2">
+                    @Html.DisplayFor(model => model.Campaigns.DataColumnNumber9Title)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Reports.DataColumnNumber9)
+                </dd>
+            }
+            @if (Model.Campaigns.DataColumnNumber10Title != null)
+            {
+                <dt class="col-sm-2">
+                    @Html.DisplayFor(model => model.Campaigns.DataColumnNumber10Title)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Reports.DataColumnNumber10)
+                </dd>
+            }
+            @if (Model.Campaigns.DataColumnTextATitle != null)
+            {
+                <dt class="col-sm-2">
+                    @Html.DisplayFor(model => model.Campaigns.DataColumnTextATitle)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Reports.DataColumnTextA)
+                </dd>
+            }
+            @if (Model.Campaigns.DataColumnTextBTitle != null)
+            {
+                <dt class="col-sm-2">
+                    @Html.DisplayFor(model => model.Campaigns.DataColumnTextBTitle)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Reports.DataColumnTextB)
+                </dd>
+            }
+            @if (Model.Campaigns.DataColumnTextCTitle != null)
+            {
+                <dt class="col-sm-2">
+                    @Html.DisplayFor(model => model.Campaigns.DataColumnTextCTitle)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Reports.DataColumnTextC)
+                </dd>
+            }
+            @if (Model.Campaigns.DataColumnTextDTitle != null)
+            {
+                <dt class="col-sm-2">
+                    @Html.DisplayFor(model => model.Campaigns.DataColumnTextDTitle)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Reports.DataColumnTextD)
+                </dd>
+            }
+            @if (Model.Campaigns.DataColumnTextETitle != null)
+            {
+                <dt class="col-sm-2">
+                    @Html.DisplayFor(model => model.Campaigns.DataColumnTextETitle)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Reports.DataColumnTextE)
+                </dd>
+            }
+            @if (Model.Campaigns.DataColumnTextFTitle != null)
+            {
+                <dt class="col-sm-2">
+                    @Html.DisplayFor(model => model.Campaigns.DataColumnTextFTitle)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Reports.DataColumnTextF)
+                </dd>
+            }
+            @if (Model.Campaigns.DataColumnTextGTitle != null)
+            {
+                <dt class="col-sm-2">
+                    @Html.DisplayFor(model => model.Campaigns.DataColumnTextGTitle)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Reports.DataColumnTextG)
+                </dd>
+            }
+            @if (Model.Campaigns.DataColumnTextHTitle != null)
+            {
+                <dt class="col-sm-2">
+                    @Html.DisplayFor(model => model.Campaigns.DataColumnTextHTitle)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Reports.DataColumnTextH)
+                </dd>
+            }
+            @if (Model.Campaigns.DataColumnTextITitle != null)
+            {
+                <dt class="col-sm-2">
+                    @Html.DisplayFor(model => model.Campaigns.DataColumnTextITitle)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Reports.DataColumnTextI)
+                </dd>
+            }
+            @if (Model.Campaigns.DataColumnTextJTitle != null)
+            {
+                <dt class="col-sm-2">
+                    @Html.DisplayFor(model => model.Campaigns.DataColumnTextJTitle)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Reports.DataColumnTextJ)
+                </dd>
+            }
+        </dl>
+    </div>
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.Reports.Id">Edit</a> |
+        <a asp-action="Index">Back to List</a>
+    </div>
+
+</body>
+</html>

@@ -18,11 +18,13 @@ function loadDataTable() {
                 "data": "id",
                 "render": function (data) {
                     return `<div class="text-center">
-                        <a href="/Reports/Details?id=${data}" class='btn btn-success text-white' style='cursor:pointer; width:90px;'>
+                        <a class='btn btn-success text-white' style='cursor:pointer; width:90px;'
+                            onclick=Details('/Dashboard/ReportDetails?id='+${data})>
                             Details
                         </a>
                         &nbsp;
-                        <a href="/Reports/Edit?id=${data}" class='btn btn-success text-white' style='cursor:pointer; width:70px;'>
+                        <a class='btn btn-success text-white' style='cursor:pointer; width:70px;'
+                            onclick=Edit('/Dashboard/ReportEdit?id='+${data})>
                             Edit
                         </a>
                         &nbsp;
@@ -66,3 +68,11 @@ function Delete(url) {
         }
     });
 }
+
+function Details(url) {
+    $("#main").load(url);
+};
+
+function Edit(url) {
+    $("#main").load(url);
+};

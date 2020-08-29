@@ -14,6 +14,8 @@
                 @if (Model.Id != 0)
                 {
                     <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="ManagerId" />
+
                 }
                 <div class="text-danger" asp-validation-summary="ModelOnly"></div>
                 <div class="form-group row">

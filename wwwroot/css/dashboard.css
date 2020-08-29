@@ -78,3 +78,27 @@
 .vh100 {
     min-height: 100vh;
 }
+
+@media (min-width: 776px) {
+    .container {
+        max-width: 540px;
+    }
+}
+
+@media (min-width: 968px) {
+    .container {
+        max-width: 720px;
+    }
+}
+
+@media (min-width: 1192px) {
+    .container {
+        max-width: 960px;
+    }
+}
+
+@media (min-width: 1400px) {
+    .container {
+        max-width: 1140px;
+    }
+}

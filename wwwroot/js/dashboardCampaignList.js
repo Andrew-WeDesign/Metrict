@@ -7,27 +7,30 @@ $(document).ready(function () {
 function loadDataTable() {
     dataTable = $('#DT_load').DataTable({
         "ajax": {
-            "url": "/Reports/getall/",
+            "url": "/Campaigns/getall/",
             "type": "GET",
             "datatype": "json"
         },
         "columns": [
-            { "data": "campaignName", "width": "30%" },
-            { "data": "submissionDate", "width": "30%" },
+            { "data": "name", "width": "20%" },
+            { "data": "startDate", "width": "20%" },
+            { "data": "campaignActive", "width": "20%" },
             {
                 "data": "id",
                 "render": function (data) {
                     return `<div class="text-center">
-                        <a href="/Reports/Details?id=${data}" class='btn btn-success text-white' style='cursor:pointer; width:90px;'>
-                            Details
+                        <a class='btn btn-success text-white' style='cursor:pointer; width:120px;'
+                            onclick=Dashboard('/Dashboard/CampaignDashboard?id='+${data})>
+                            Dashboard
                         </a>
                         &nbsp;
-                        <a href="/Reports/Edit?id=${data}" class='btn btn-success text-white' style='cursor:pointer; width:70px;'>
+                        <a class='btn btn-success text-white' style='cursor:pointer; width:100px;'
+                            onclick=Edit('/Dashboard/CampaignUpsert?id='+${data})>
                             Edit
                         </a>
                         &nbsp;
-                        <a class='btn btn-danger text-white' style='cursor:pointer; width:80px;'
-                            onclick=Delete('/Reports/Delete?id='+${data})>
+                        <a class='btn btn-danger text-white' style='cursor:pointer; width:100px;'
+                            onclick=Delete('/Campaigns/Delete?id='+${data})>
                             Delete
                         </a>
                         </div>`;
@@ -66,3 +69,11 @@ function Delete(url) {
         }
     });
 }
+
+function Dashboard(url) {
+    $("#main").load(url);
+};
+
+function Edit(url) {
+    $("#main").load(url);
+};
