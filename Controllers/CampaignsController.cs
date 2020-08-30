@@ -87,8 +87,11 @@ namespace Metrict.Controllers
             {
                 if (Campaign.Id == 0)
                 {
+                    var src = DateTime.Now;
+                    var hm = new DateTime(src.Year, src.Month, src.Day, src.Hour, src.Minute, 0);
+
                     Campaign.ManagerId = currentUser.Id;
-                    Campaign.StartDate = DateTime.Now;
+                    Campaign.StartDate = hm;
                     Campaign.CampaignActive = true;
                     Campaign.Company = currentUser.Company;
                     _context.Campaigns.Add(Campaign);

@@ -285,3 +285,5 @@ E:\Repos\Metrict\Metrict\obj\Debug\netcoreapp3.1\Razor\Views\Dashboard\ReportDet
 E:\Repos\Metrict\Metrict\obj\Debug\netcoreapp3.1\Razor\Views\Dashboard\ReportEdit.cshtml.g.cs
 E:\Repos\Metrict\Metrict\obj\Debug\netcoreapp3.1\Razor\Views\Dashboard\CampaignDashboard.cshtml.g.cs
 E:\Repos\Metrict\Metrict\obj\Debug\netcoreapp3.1\Razor\Views\Dashboard\CampaignUpsert.cshtml.g.cs
+E:\Repos\Metrict\Metrict\obj\Debug\netcoreapp3.1\Razor\Views\Dashboard\ReportStartReport.cshtml.g.cs
+E:\Repos\Metrict\Metrict\obj\Debug\netcoreapp3.1\Razor\Views\Dashboard\ReportCreate.cshtml.g.cs

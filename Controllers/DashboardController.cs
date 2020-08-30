@@ -94,6 +94,23 @@ namespace Metrict.Controllers
             return View(vm);
         }
 
+        public IActionResult ReportStartReport()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> ReportCreate(int id)
+        {
+            Report = new Report();
+
+            CampaignReportData vm = new CampaignReportData()
+            {
+                Campaigns = await _context.Campaigns.FirstOrDefaultAsync(x => x.Id == id)
+            };
+
+            return View(vm);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ReportUpsert(CampaignReportData campaignReportData)
@@ -155,6 +172,9 @@ namespace Metrict.Controllers
             }
             return View(Report);
         }
+
+
+
 
 
 

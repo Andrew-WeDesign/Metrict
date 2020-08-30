@@ -18,6 +18,10 @@ function Edit(url) {
     $("#main").load(url);
 };
 
+function StartReport(url) {
+    $("#main").load(url);
+};
+
 function BackToReports() {
     $("#main").load("/Dashboard/Reports");
 };
@@ -27,9 +31,9 @@ function BackToCampaigns() {
 };
 
 function StartReportChooseCampaign() {
-    $("#main").load("/Dashboard/StartReport")
-}
+    $("#main").load("/Dashboard/ReportStartReport")
+};
 
 function StartNewCampaign() {
     $("#main").load("/Dashboard/CampaignUpsert")
-}
+};
