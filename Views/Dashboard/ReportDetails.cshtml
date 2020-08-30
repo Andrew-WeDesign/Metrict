@@ -225,10 +225,13 @@
             }
         </dl>
     </div>
-    <div>
-        <a asp-action="Edit" asp-route-id="@Model.Reports.Id">Edit</a> |
-        <a asp-action="Index">Back to List</a>
+    <div class="form-group row">
+        <div class="col-3 offset-3">
+            <a href="#" onclick="Edit('/Dashboard/ReportEdit?id=' + @Model.Reports.Id)" class="btn btn-primary form-control">Edit</a>
+        </div>
+        <div class="col-3">
+            <a href="#" onclick="BackToReports()" class="btn btn-danger form-control">Back to Reports</a>
+        </div>
     </div>
-
 </body>
 </html>

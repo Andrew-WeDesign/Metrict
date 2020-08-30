@@ -68,11 +68,3 @@ function Delete(url) {
         }
     });
 }
-
-function Details(url) {
-    $("#main").load(url);
-};
-
-function Edit(url) {
-    $("#main").load(url);
-};

@@ -69,11 +69,3 @@ function Delete(url) {
         }
     });
 }
-
-function Dashboard(url) {
-    $("#main").load(url);
-};
-
-function Edit(url) {
-    $("#main").load(url);
-};
