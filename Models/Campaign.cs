@@ -14,7 +14,7 @@ namespace Metrict.Models
         public DateTime StartDate { get; set; }
         public bool CampaignActive { get; set; }
         public string ManagerId { get; set; }
-        public string Company { get; set; }
+        public int CompanyId { get; set; }
         //Allow 10 number fields used to present data in graphs and charts
         public int NumberDataColumnCount { get; set; }
         public string DataColumnNumber1Title { get; set; }

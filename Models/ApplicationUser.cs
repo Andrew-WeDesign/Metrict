@@ -24,7 +24,7 @@ namespace Metrict.Models
 
         [Required]
         [Display(Name = "Company")]
-        public string Company { get; set; }
+        public int CompanyId { get; set; }
 
         [Required]
         [Display(Name = "Role")]

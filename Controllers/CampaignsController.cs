@@ -22,7 +22,6 @@ namespace Metrict.Controllers
 
         [BindProperty]
         public Campaign Campaign { get; set; }
-        public DeletedCampaign DeletedCampaign { get; set; }
 
         public CampaignsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
@@ -82,6 +81,10 @@ namespace Metrict.Controllers
         {
             var currentUser = await GetCurrentUserAsync();
             //ViewBag.UserId = currentUser.Id;
+            if (currentUser.UserActive == false)
+            {
+                return NotFound();
+            }
 
             if (ModelState.IsValid)
             {
@@ -93,13 +96,13 @@ namespace Metrict.Controllers
                     Campaign.ManagerId = currentUser.Id;
                     Campaign.StartDate = hm;
                     Campaign.CampaignActive = true;
-                    Campaign.Company = currentUser.Company;
+                    Campaign.CompanyId = currentUser.CompanyId;
                     _context.Campaigns.Add(Campaign);
                     //_context.SaveChanges();
                     if(currentUser.UserRole == "NewUser")
                     {
                         var applicationUser = await _context.ApplicationUsers.FindAsync(currentUser.Id);
-                        if (!ManagerExists("Manager", currentUser.Company))
+                        if (!ManagerExists("Manager", currentUser.CompanyId))
                         {
                             applicationUser.UserRole = "Manager";
                             await _userManager.AddToRoleAsync(applicationUser, "Manager");
@@ -135,9 +138,8 @@ namespace Metrict.Controllers
                     else
                     {
                         Campaign.ManagerId = currentUser.Id;
-                        Campaign.StartDate = DateTime.Now;
                         Campaign.CampaignActive = true;
-                        Campaign.Company = currentUser.Company;
+                        Campaign.CompanyId = currentUser.CompanyId;
                         _context.Campaigns.Update(Campaign);
                         //_context.SaveChanges();
                     }
@@ -153,7 +155,7 @@ namespace Metrict.Controllers
         {
             var currentUser = await GetCurrentUserAsync();
 
-            return Json(new { data = await _context.Campaigns.Where(a => a.ManagerId == currentUser.Id).ToListAsync() });
+            return Json(new { data = await _context.Campaigns.Where(a => a.ManagerId == currentUser.Id).Where(x => x.CampaignActive == true).ToListAsync() });
         }
 
         //[HttpDelete]
@@ -166,45 +168,18 @@ namespace Metrict.Controllers
             }
 
             var currentUser = await GetCurrentUserAsync();
+            if (currentUser.UserActive == false)
+            {
+                return NotFound();
+            }
+
             if (campaignFromDb.ManagerId != currentUser.Id)
             {
                 return NotFound();
             }
 
-            DeletedCampaign = new DeletedCampaign();
-            // add to its own method at a later date
-            DeletedCampaign.Id = campaignFromDb.Id;
-            DeletedCampaign.Name = campaignFromDb.Name;
-            DeletedCampaign.StartDate = campaignFromDb.StartDate;
-            DeletedCampaign.CampaignActive = campaignFromDb.CampaignActive;
-            DeletedCampaign.ManagerId = campaignFromDb.ManagerId;
-            DeletedCampaign.NumberDataColumnCount = campaignFromDb.NumberDataColumnCount;
-            DeletedCampaign.DataColumnNumber1Title = campaignFromDb.DataColumnNumber1Title;
-            DeletedCampaign.DataColumnNumber2Title = campaignFromDb.DataColumnNumber2Title;
-            DeletedCampaign.DataColumnNumber3Title = campaignFromDb.DataColumnNumber3Title;
-            DeletedCampaign.DataColumnNumber4Title = campaignFromDb.DataColumnNumber4Title;
-            DeletedCampaign.DataColumnNumber5Title = campaignFromDb.DataColumnNumber5Title;
-            DeletedCampaign.DataColumnNumber6Title = campaignFromDb.DataColumnNumber6Title;
-            DeletedCampaign.DataColumnNumber7Title = campaignFromDb.DataColumnNumber7Title;
-            DeletedCampaign.DataColumnNumber8Title = campaignFromDb.DataColumnNumber8Title;
-            DeletedCampaign.DataColumnNumber9Title = campaignFromDb.DataColumnNumber9Title;
-            DeletedCampaign.DataColumnNumber10Title = campaignFromDb.DataColumnNumber10Title;
-            DeletedCampaign.TextDataColumnCount = campaignFromDb.TextDataColumnCount;
-            DeletedCampaign.DataColumnTextATitle = campaignFromDb.DataColumnTextATitle;
-            DeletedCampaign.DataColumnTextBTitle = campaignFromDb.DataColumnTextBTitle;
-            DeletedCampaign.DataColumnTextCTitle = campaignFromDb.DataColumnTextCTitle;
-            DeletedCampaign.DataColumnTextDTitle = campaignFromDb.DataColumnTextDTitle;
-            DeletedCampaign.DataColumnTextETitle = campaignFromDb.DataColumnTextETitle;
-            DeletedCampaign.DataColumnTextFTitle = campaignFromDb.DataColumnTextFTitle;
-            DeletedCampaign.DataColumnTextGTitle = campaignFromDb.DataColumnTextGTitle;
-            DeletedCampaign.DataColumnTextHTitle = campaignFromDb.DataColumnTextHTitle;
-            DeletedCampaign.DataColumnTextITitle = campaignFromDb.DataColumnTextITitle;
-            DeletedCampaign.DataColumnTextJTitle = campaignFromDb.DataColumnTextJTitle;
-            // add to its own method at a later date
-            _context.DeletedCampaigns.Add(DeletedCampaign);
-            await _context.SaveChangesAsync();
-
-            _context.Campaigns.Remove(campaignFromDb);
+            campaignFromDb.CampaignActive = false;
+            _context.Campaigns.Update(campaignFromDb);
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Delete Successful" });
 
@@ -360,7 +335,7 @@ namespace Metrict.Controllers
             //ViewBag.ListofCampaigns = campaignList;
 
             List<ApplicationUser> applicationUserList = new List<ApplicationUser>();
-            applicationUserList = (from product in _context.ApplicationUsers.Where(x => x.Company == currentUser.Company) select product).ToList();
+            applicationUserList = (from product in _context.ApplicationUsers.Where(x => x.CompanyId == currentUser.CompanyId) select product).ToList();
             ViewBag.ListOfUsers = applicationUserList;
 
             return View();
@@ -535,10 +510,15 @@ namespace Metrict.Controllers
                 return NotFound();
             }
 
+            var currentUser = await GetCurrentUserAsync();
+
             var campaign = await _context.Campaigns.FirstOrDefaultAsync(x => x.Id == id);
             ViewBag.idOfCampaign = campaign.Id;
 
-            var currentUser = await GetCurrentUserAsync();
+            if (currentUser.Id != campaign.ManagerId)
+            {
+                return NotFound();
+            }
 
             List<CampaignUser> userCountList = new List<CampaignUser>();
             userCountList = (from x in _context.CampaignUsers
@@ -612,9 +592,9 @@ namespace Metrict.Controllers
             return _context.ApplicationUsers.Any(e => e.Id == id);
         }
 
-        private bool ManagerExists(string userRole, string company)
+        private bool ManagerExists(string userRole, int companyId)
         {
-            return _context.ApplicationUsers.Where(x => x.Company == company).Any(e => e.UserRole == userRole);
+            return _context.ApplicationUsers.Where(x => x.CompanyId == companyId).Any(e => e.UserRole == userRole);
         }
     }
 }

@@ -9,17 +9,10 @@
 
 <div class="border container" style="padding:30px;">
     <form asp-action="ChangeCompany" method="post">
-        <input type="hidden" asp-for="Id" />
-        <input type="hidden" asp-for="UserRole" />
         <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+        <input type="hidden" asp-for="UserRole" />
         <div class="form-group row">
-            <div class="col-3">
-                <label asp-for="Company"></label>
-            </div>
-            <div class="col-6">
-                <input asp-for="Company" class="form-control" />
-                <span asp-validation-for="Company" class="text-danger"></span>
-            </div>
+            <select class="selectpicker select25p" asp-for="CompanyId" asp-items="@(new SelectList(ViewBag.ListofCompanies, "Id", "Name"))"></select>
         </div>
         <div class="form-group row">
             <div class="col-3 offset-3">
@@ -33,7 +26,12 @@
         </div>
     </form>
 </div>
-
 @section Scripts{
+    <script>
+        $(function () {
+            $(".selectpicker").chosen();
+        });
+    </script>
     <partial name="_ValidationScriptsPartial" />
+
 }

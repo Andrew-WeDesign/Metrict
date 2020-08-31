@@ -21,8 +21,7 @@ namespace Metrict.Data
         public DbSet<Campaign> Campaigns { get; set; }
         public DbSet<CampaignUser> CampaignUsers { get; set; }
         public DbSet<Report> Reports { get; set; }
-        public DbSet<DeletedCampaign> DeletedCampaigns { get; set; }
-        public DbSet<DeletedReport> DeletedReports { get; set; }
+        public DbSet<Company> Company { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -30,8 +29,7 @@ namespace Metrict.Data
             modelBuilder.Entity<Campaign>().ToTable("Campaign");
             modelBuilder.Entity<CampaignUser>().ToTable("CampaignUser");
             modelBuilder.Entity<Report>().ToTable("Report");
-            modelBuilder.Entity<DeletedCampaign>().ToTable("DeletedCampaign");
-            modelBuilder.Entity<DeletedReport>().ToTable("DeletedReport");
+            modelBuilder.Entity<Company>().ToTable("Company");
             base.OnModelCreating(modelBuilder);
         }
 

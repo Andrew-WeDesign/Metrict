@@ -15,9 +15,10 @@ namespace Metrict.Models
         public int CampaignId { get; set; }
         public string CampaignName { get; set; }
         public string ManagerId { get; set; }
-        public string Company { get; set; }
+        public int CompanyId { get; set; }
         public DateTime SubmissionDate { get; set; }
         public DateTime LastEditDate { get; set; }
+        public bool IsActive { get; set; }
 
         public int DataColumnNumber1 { get; set; }
         public int DataColumnNumber2 { get; set; }

@@ -23,7 +23,7 @@ namespace Metrict.Services
             string sendGridUser = "Metrict";
             var msg = new SendGridMessage()
             {
-                From = new EmailAddress("Metrictreporting@gmail.com", sendGridUser),
+                From = new EmailAddress("services@metrict.com", sendGridUser),
                 Subject = subject,
                 PlainTextContent = message,
                 HtmlContent = message

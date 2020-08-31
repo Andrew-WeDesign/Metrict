@@ -8,12 +8,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Metrict.Models;
+using Metrict.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 
 namespace Metrict.Areas.Identity.Pages.Account
 {
@@ -24,17 +26,20 @@ namespace Metrict.Areas.Identity.Pages.Account
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly ApplicationDbContext _context;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _context = context;
         }
 
         [BindProperty]
@@ -85,6 +90,13 @@ namespace Metrict.Areas.Identity.Pages.Account
             {
                 ViewData["Company"] = company;
             }
+            else
+            {
+                List<Company> companyList = new List<Company>();
+                companyList = _context.Company.ToList();
+                IEnumerable<Company> coList = companyList;
+                ViewData["ListofCompanies"] = coList;
+            }
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
@@ -92,6 +104,19 @@ namespace Metrict.Areas.Identity.Pages.Account
         {
             returnUrl = returnUrl ?? Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
+            if (!CompanyExists(Input.Company))
+            {
+                var company = new Company
+                {
+                    Name = Input.Company
+                };
+                _context.Company.Add(company);
+                await _context.SaveChangesAsync();
+            }
+
+            var comp = _context.Company.FirstOrDefault(x => x.Name == Input.Company);
+
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser 
@@ -100,8 +125,8 @@ namespace Metrict.Areas.Identity.Pages.Account
                     Email = Input.Email, 
                     FirstName = Input.FirstName, 
                     LastName = Input.LastName, 
-                    UserRole = "NewUser", 
-                    Company = Input.Company
+                    UserRole = "NewUser",
+                    CompanyId = comp.Id
                 };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
@@ -139,5 +164,11 @@ namespace Metrict.Areas.Identity.Pages.Account
             // If we got this far, something failed, redisplay form
             return Page();
         }
+
+        private bool CompanyExists(string companyName)
+        {
+            return _context.Company.Any(e => e.Name == companyName);
+        }
+
     }
 }

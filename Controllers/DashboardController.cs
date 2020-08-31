@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Metrict.Data;
 using Metrict.Models;
 using Metrict.Models.ReportViewModels;
+using Metrict.Models.CampaignViewModels;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 
@@ -116,59 +117,61 @@ namespace Metrict.Controllers
         public async Task<IActionResult> ReportUpsert(CampaignReportData campaignReportData)
         {
             var currentUser = await GetCurrentUserAsync();
-            var campaign = await _context.Campaigns.FirstOrDefaultAsync(x => x.Id == campaignReportData.Reports.CampaignId);
-            if (currentUser.UserActive == true)
+            if (currentUser.UserActive == false)
             {
-                if (ModelState.IsValid)
+                return NotFound();
+            }
+
+            var campaign = await _context.Campaigns.FirstOrDefaultAsync(x => x.Id == campaignReportData.Reports.CampaignId);
+            if (ModelState.IsValid)
+            {
+                if (campaignReportData.Reports.Id == 0)
                 {
-                    if (campaignReportData.Reports.Id == 0)
+                    campaignReportData.Reports.ManagerId = campaign.ManagerId;
+                    campaignReportData.Reports.SubmissionDate = DateTime.Now;
+                    campaignReportData.Reports.ApplicationUserId = currentUser.Id;
+                    campaignReportData.Reports.ApplicationUserName = currentUser.FullName;
+                    //campaignReportData.Reports.CampaignId = campaignReportData.Reports.CampaignId;
+                    campaignReportData.Reports.CampaignName = campaign.Name;
+                    campaignReportData.Reports.CompanyId = currentUser.CompanyId;
+                    _context.Reports.Add(campaignReportData.Reports);
+                }
+                else
+                {
+                    var report = await _context.Reports.FirstOrDefaultAsync(x => x.Id == campaignReportData.Reports.Id);
+                    if (!CorrectAppUser(currentUser.Id, campaignReportData.Reports.Id))
                     {
-                        campaignReportData.Reports.ManagerId = campaign.ManagerId;
-                        campaignReportData.Reports.SubmissionDate = DateTime.Now;
-                        campaignReportData.Reports.ApplicationUserId = currentUser.Id;
-                        campaignReportData.Reports.ApplicationUserName = currentUser.FullName;
-                        //campaignReportData.Reports.CampaignId = campaignReportData.Reports.CampaignId;
-                        campaignReportData.Reports.CampaignName = campaign.Name;
-                        campaignReportData.Reports.Company = currentUser.Company;
-                        _context.Reports.Add(campaignReportData.Reports);
+                        return NotFound();
                     }
                     else
                     {
-                        var report = await _context.Reports.FirstOrDefaultAsync(x => x.Id == campaignReportData.Reports.Id);
-                        if (!CorrectAppUser(currentUser.Id, campaignReportData.Reports.Id))
-                        {
-                            return NotFound();
-                        }
-                        else
-                        {
-                            report.LastEditDate = DateTime.Now;
-                            report.DataColumnNumber1 = campaignReportData.Reports.DataColumnNumber1;
-                            report.DataColumnNumber2 = campaignReportData.Reports.DataColumnNumber2;
-                            report.DataColumnNumber3 = campaignReportData.Reports.DataColumnNumber3;
-                            report.DataColumnNumber4 = campaignReportData.Reports.DataColumnNumber4;
-                            report.DataColumnNumber5 = campaignReportData.Reports.DataColumnNumber5;
-                            report.DataColumnNumber6 = campaignReportData.Reports.DataColumnNumber6;
-                            report.DataColumnNumber7 = campaignReportData.Reports.DataColumnNumber7;
-                            report.DataColumnNumber8 = campaignReportData.Reports.DataColumnNumber8;
-                            report.DataColumnNumber9 = campaignReportData.Reports.DataColumnNumber9;
-                            report.DataColumnNumber10 = campaignReportData.Reports.DataColumnNumber10;
-                            report.DataColumnTextA = campaignReportData.Reports.DataColumnTextA;
-                            report.DataColumnTextB = campaignReportData.Reports.DataColumnTextB;
-                            report.DataColumnTextC = campaignReportData.Reports.DataColumnTextC;
-                            report.DataColumnTextD = campaignReportData.Reports.DataColumnTextD;
-                            report.DataColumnTextE = campaignReportData.Reports.DataColumnTextE;
-                            report.DataColumnTextF = campaignReportData.Reports.DataColumnTextF;
-                            report.DataColumnTextG = campaignReportData.Reports.DataColumnTextG;
-                            report.DataColumnTextH = campaignReportData.Reports.DataColumnTextH;
-                            report.DataColumnTextI = campaignReportData.Reports.DataColumnTextI;
-                            report.DataColumnTextJ = campaignReportData.Reports.DataColumnTextJ;
-                            report.Company = currentUser.Company;
-                            _context.Reports.Update(report);
-                        }
+                        report.LastEditDate = DateTime.Now;
+                        report.DataColumnNumber1 = campaignReportData.Reports.DataColumnNumber1;
+                        report.DataColumnNumber2 = campaignReportData.Reports.DataColumnNumber2;
+                        report.DataColumnNumber3 = campaignReportData.Reports.DataColumnNumber3;
+                        report.DataColumnNumber4 = campaignReportData.Reports.DataColumnNumber4;
+                        report.DataColumnNumber5 = campaignReportData.Reports.DataColumnNumber5;
+                        report.DataColumnNumber6 = campaignReportData.Reports.DataColumnNumber6;
+                        report.DataColumnNumber7 = campaignReportData.Reports.DataColumnNumber7;
+                        report.DataColumnNumber8 = campaignReportData.Reports.DataColumnNumber8;
+                        report.DataColumnNumber9 = campaignReportData.Reports.DataColumnNumber9;
+                        report.DataColumnNumber10 = campaignReportData.Reports.DataColumnNumber10;
+                        report.DataColumnTextA = campaignReportData.Reports.DataColumnTextA;
+                        report.DataColumnTextB = campaignReportData.Reports.DataColumnTextB;
+                        report.DataColumnTextC = campaignReportData.Reports.DataColumnTextC;
+                        report.DataColumnTextD = campaignReportData.Reports.DataColumnTextD;
+                        report.DataColumnTextE = campaignReportData.Reports.DataColumnTextE;
+                        report.DataColumnTextF = campaignReportData.Reports.DataColumnTextF;
+                        report.DataColumnTextG = campaignReportData.Reports.DataColumnTextG;
+                        report.DataColumnTextH = campaignReportData.Reports.DataColumnTextH;
+                        report.DataColumnTextI = campaignReportData.Reports.DataColumnTextI;
+                        report.DataColumnTextJ = campaignReportData.Reports.DataColumnTextJ;
+                        report.CompanyId = currentUser.CompanyId;
+                        _context.Reports.Update(report);
                     }
-                    _context.SaveChanges();
-                    return RedirectToAction("Index");
                 }
+                _context.SaveChanges();
+                return RedirectToAction("Index");
             }
             return View(Report);
         }
@@ -196,10 +199,15 @@ namespace Metrict.Controllers
                 return NotFound();
             }
 
+            var currentUser = await GetCurrentUserAsync();
+
             var campaign = await _context.Campaigns.FirstOrDefaultAsync(x => x.Id == id);
             ViewBag.idOfCampaign = campaign.Id;
 
-            var currentUser = await GetCurrentUserAsync();
+            if (currentUser.Id != campaign.ManagerId)
+            {
+                return NotFound();
+            }
 
             List<CampaignUser> userCountList = new List<CampaignUser>();
             userCountList = (from x in _context.CampaignUsers
@@ -291,6 +299,10 @@ namespace Metrict.Controllers
         {
             var currentUser = await GetCurrentUserAsync();
             //ViewBag.UserId = currentUser.Id;
+            if (currentUser.UserActive == false)
+            {
+                return NotFound();
+            }
 
             if (ModelState.IsValid)
             {
@@ -299,13 +311,13 @@ namespace Metrict.Controllers
                     Campaign.ManagerId = currentUser.Id;
                     Campaign.StartDate = DateTime.Now;
                     Campaign.CampaignActive = true;
-                    Campaign.Company = currentUser.Company;
+                    Campaign.CompanyId = currentUser.CompanyId;
                     _context.Campaigns.Add(Campaign);
                     //_context.SaveChanges();
                     if (currentUser.UserRole == "NewUser")
                     {
                         var applicationUser = await _context.ApplicationUsers.FindAsync(currentUser.Id);
-                        if (!ManagerExists("Manager", currentUser.Company))
+                        if (!ManagerExists("Manager", currentUser.CompanyId))
                         {
                             applicationUser.UserRole = "Manager";
                             await _userManager.AddToRoleAsync(applicationUser, "Manager");
@@ -341,9 +353,8 @@ namespace Metrict.Controllers
                     else
                     {
                         Campaign.ManagerId = currentUser.Id;
-                        Campaign.StartDate = DateTime.Now;
                         Campaign.CampaignActive = true;
-                        Campaign.Company = currentUser.Company;
+                        Campaign.CompanyId = currentUser.CompanyId;
                         _context.Campaigns.Update(Campaign);
                         //_context.SaveChanges();
                     }
@@ -352,6 +363,71 @@ namespace Metrict.Controllers
                 return RedirectToAction("Index");
             }
             return View(Campaign);
+        }
+
+        public async Task<IActionResult> CampaignManageCampaignUser(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var campaign = await _context.Campaigns.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (campaign == null)
+            {
+                return NotFound();
+            }
+
+            var currentUser = await GetCurrentUserAsync();
+            if (campaign.ManagerId != currentUser.Id)
+            {
+                return NotFound();
+            }
+
+            ViewBag.nameOfCampaign = campaign.Name;
+            CampaignUserData vm = new CampaignUserData();
+            var applicationDbContext = _context.CampaignUsers
+                .Include(o => o.ApplicationUser)
+                .Where(a => a.CampaignId == id);
+            vm.CampaignUsers = applicationDbContext;
+
+            return View(vm);
+        }
+
+        public async Task<IActionResult> CampaignNewCampaignUser(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var campaign = await _context.Campaigns.FirstOrDefaultAsync(m => m.Id == id);
+
+            if (campaign == null)
+            {
+                return NotFound();
+            }
+
+            var currentUser = await GetCurrentUserAsync();
+            if (campaign.ManagerId != currentUser.Id)
+            {
+                return NotFound();
+            }
+
+            ViewBag.IdCampaign = campaign.Id;
+            ViewBag.nameOfCampaign = campaign.Name;
+            ViewBag.UserId = currentUser.Id;
+
+            //List<Campaign> campaignList = new List<Campaign>();
+            //campaignList = (from product in _context.Campaigns.Where(a => a.ManagerId == currentUser.Id) select product).ToList();
+            //ViewBag.ListofCampaigns = campaignList;
+
+            List<ApplicationUser> applicationUserList = new List<ApplicationUser>();
+            applicationUserList = (from product in _context.ApplicationUsers.Where(x => x.CompanyId == currentUser.CompanyId) select product).ToList();
+            ViewBag.ListOfUsers = applicationUserList;
+
+            return View();
         }
 
 
@@ -375,9 +451,9 @@ namespace Metrict.Controllers
             return _context.ApplicationUsers.Any(e => e.Id == id);
         }
 
-        private bool ManagerExists(string userRole, string company)
+        private bool ManagerExists(string userRole, int companyId)
         {
-            return _context.ApplicationUsers.Where(x => x.Company == company).Any(e => e.UserRole == userRole);
+            return _context.ApplicationUsers.Where(x => x.CompanyId == companyId).Any(e => e.UserRole == userRole);
         }
 
     }

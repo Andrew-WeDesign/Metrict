@@ -39,14 +39,18 @@
             </div>
             @if (ViewData["Company"] != null)
             {
-                <input type="hidden" asp-for="Input.Company" value="@ViewData["Company"]"/>
+                <input type="hidden" asp-for="Input.Company" value="@ViewData["Company"]" />
             }
             else
             {
-                <div class="form-group">
+                //new SelectList(ViewData["ListOfCompanies"]);
+                //asp-items="@(new SelectList(ViewBag.ListofCompanies, "Id", "Name"))"
+
+                <div class="form-group" id="ChangeSelectToText">
                     <label asp-for="Input.Company"></label>
-                    <input asp-for="Input.Company" class="form-control" />
+                    @Html.DropDownList("Input.Company", new SelectList((System.Collections.IEnumerable)ViewData["ListOfCompanies"], "Id", "Name"), new { @class = "selectpicker" })
                     <span asp-validation-for="Input.Company" class="text-danger"></span>
+                    <a href="#" class="btn btn-primary" id="BtnSelToText">Can't find your Company? Click here to enter it.</a>
                 </div>
             }
 
@@ -87,4 +91,19 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(function () {
+            $(".selectpicker").chosen();
+        });
+    </script>
+    <script>
+        $("#BtnSelToText").click(function () {
+            $("#ChangeSelectToText").replaceWith(
+                '<div class="form-group"><label for="Input_Company">Company</label><input class="form-control" type="text" data-val="true" data-val-required="The Company field is required." id="Input_Company" name="Input.Company" value=""></div>'
+            );
+        });
+    </script>
+    <script>
+
+    </script>
 }

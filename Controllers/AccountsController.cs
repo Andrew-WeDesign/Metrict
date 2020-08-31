@@ -41,15 +41,22 @@ namespace Metrict.Controllers
         {
             var currentUser = await GetCurrentUserAsync();
             var applicationUser = await _context.ApplicationUsers.FindAsync(currentUser.Id);
+
+            List<Company> companyList = new List<Company>();
+            companyList = _context.Company.ToList();
+            ViewBag.ListofCompanies = companyList;
+
+
             return View(applicationUser);
         }
 
         [HttpPost]
-        public async Task<IActionResult> ChangeCompany(string company)
+        public async Task<IActionResult> ChangeCompany(int companyId)
         {
             var currentUser = await GetCurrentUserAsync();
             var applicationUser = await _context.ApplicationUsers.FindAsync(currentUser.Id);
-            applicationUser.Company = company;
+            var comp = await _context.Company.FirstOrDefaultAsync(x => x.Id == companyId);
+            applicationUser.CompanyId = comp.Id;
             if (ModelState.IsValid)
             {
                 try

@@ -26,10 +26,17 @@
         Number of reports counted: @ViewBag.reportDataCount
     </p>
 
-    <a href="/Campaigns/ManageCampaignUser?id=@Model.Id" class='btn btn-success text-white' style='cursor:pointer; width:100px;'>
+    @*<a href="/Campaigns/ManageCampaignUser?id=@Model.Id" class='btn btn-success text-white' style='cursor:pointer; width:100px;'>
+        Manage Members
+    </a>*@
+    <a href="#" onclick="CampaignManageMembers('/Dashboard/CampaignManageCampaignUser?id='+@Model.Id)" class='btn btn-success text-white' style='cursor:pointer; width:100px;'>
         Manage Members
     </a>
-    <a href="/Campaigns/NewCampaignUser?id=@Model.Id" class='btn btn-success text-white' style='cursor:pointer; width:100px;'>
+
+    @*<a href="/Campaigns/NewCampaignUser?id=@Model.Id" class='btn btn-success text-white' style='cursor:pointer; width:100px;'>
+        Add New Members
+    </a>*@
+    <a href="#" onclick="CampaignNewMembers('/Dashboard/CampaignNewCampaignUser?id='+@Model.Id)"class='btn btn-success text-white' style='cursor:pointer; width:100px;'>
         Add New Members
     </a>
 

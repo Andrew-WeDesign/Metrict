@@ -37,3 +37,11 @@ function StartReportChooseCampaign() {
 function StartNewCampaign() {
     $("#main").load("/Dashboard/CampaignUpsert")
 };
+
+function CampaignManageMembers(url) {
+    $("#main").load(url);
+}
+
+function CampaignNewMembers(url) {
+    $("#main").load(url);
+}

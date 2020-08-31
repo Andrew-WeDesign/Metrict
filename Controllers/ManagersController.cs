@@ -55,13 +55,13 @@ namespace Metrict.Controllers
         public async Task<IActionResult> InviteUsers(string email)
         {
             var currentUser = await GetCurrentUserAsync();
-
+            var comp = await _context.Company.FirstOrDefaultAsync(x => x.Id == currentUser.CompanyId);
             if (email != null)
             {
-                var callbackUrl = $"https://localhost:44322/Identity/Account/Register?company={currentUser.Company}";
+                var callbackUrl = $"https://localhost:44322/Identity/Account/Register?company={comp.Name}";
 
                 await _emailSender.SendEmailAsync(email, "Sign up for Metrict",
-                    $"Start using Metrict for {currentUser.Company} <a href='{callbackUrl}'>clicking here</a>.");
+                    $"Start using Metrict for {comp.Name} <a href='{callbackUrl}'>clicking here</a>.");
 
                 return RedirectToAction(nameof(Index));
             }

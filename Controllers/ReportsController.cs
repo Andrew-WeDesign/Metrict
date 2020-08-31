@@ -22,7 +22,6 @@ namespace Metrict.Controllers
 
         [BindProperty]
         public Report Report { get; set; }
-        public DeletedReport DeletedReport { get; set; }
 
         public ReportsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
@@ -51,7 +50,7 @@ namespace Metrict.Controllers
         {
             var currentUser = await GetCurrentUserAsync();
 
-            return Json(new { data = await _context.Reports.Where(x => x.ApplicationUserId == currentUser.Id).ToListAsync() });
+            return Json(new { data = await _context.Reports.Where(x => x.ApplicationUserId == currentUser.Id).Where(x => x.IsActive == true).ToListAsync() });
         }
 
         public IActionResult StartReport()
@@ -137,59 +136,61 @@ namespace Metrict.Controllers
         public async Task<IActionResult> Upsert(CampaignReportData campaignReportData)
         {
             var currentUser = await GetCurrentUserAsync();
-            var campaign = await _context.Campaigns.FirstOrDefaultAsync(x => x.Id == campaignReportData.Reports.CampaignId);
-            if(currentUser.UserActive == true)
+            if (currentUser.UserActive == false)
             {
-                if (ModelState.IsValid)
+                return NotFound();
+            }
+
+            var campaign = await _context.Campaigns.FirstOrDefaultAsync(x => x.Id == campaignReportData.Reports.CampaignId);
+            if (ModelState.IsValid)
+            {
+                if (campaignReportData.Reports.Id == 0)
                 {
-                    if (campaignReportData.Reports.Id == 0)
+                    campaignReportData.Reports.ManagerId = campaign.ManagerId;
+                    campaignReportData.Reports.SubmissionDate = DateTime.Now;
+                    campaignReportData.Reports.ApplicationUserId = currentUser.Id;
+                    campaignReportData.Reports.ApplicationUserName = currentUser.FullName;
+                    //campaignReportData.Reports.CampaignId = campaignReportData.Reports.CampaignId;
+                    campaignReportData.Reports.CampaignName = campaign.Name;
+                    campaignReportData.Reports.CompanyId = currentUser.CompanyId;
+                    _context.Reports.Add(campaignReportData.Reports);
+                }
+                else
+                {
+                    var report = await _context.Reports.FirstOrDefaultAsync(x => x.Id == campaignReportData.Reports.Id);
+                    if (!CorrectAppUser(currentUser.Id, campaignReportData.Reports.Id))
                     {
-                        campaignReportData.Reports.ManagerId = campaign.ManagerId;
-                        campaignReportData.Reports.SubmissionDate = DateTime.Now;
-                        campaignReportData.Reports.ApplicationUserId = currentUser.Id;
-                        campaignReportData.Reports.ApplicationUserName = currentUser.FullName;
-                        //campaignReportData.Reports.CampaignId = campaignReportData.Reports.CampaignId;
-                        campaignReportData.Reports.CampaignName = campaign.Name;
-                        campaignReportData.Reports.Company = currentUser.Company;
-                        _context.Reports.Add(campaignReportData.Reports);
+                        return NotFound();
                     }
                     else
                     {
-                        var report = await _context.Reports.FirstOrDefaultAsync(x => x.Id == campaignReportData.Reports.Id);
-                        if (!CorrectAppUser(currentUser.Id, campaignReportData.Reports.Id))
-                        {
-                            return NotFound();
-                        }
-                        else
-                        {
-                            report.LastEditDate = DateTime.Now;
-                            report.DataColumnNumber1 = campaignReportData.Reports.DataColumnNumber1;
-                            report.DataColumnNumber2 = campaignReportData.Reports.DataColumnNumber2;
-                            report.DataColumnNumber3 = campaignReportData.Reports.DataColumnNumber3;
-                            report.DataColumnNumber4 = campaignReportData.Reports.DataColumnNumber4;
-                            report.DataColumnNumber5 = campaignReportData.Reports.DataColumnNumber5;
-                            report.DataColumnNumber6 = campaignReportData.Reports.DataColumnNumber6;
-                            report.DataColumnNumber7 = campaignReportData.Reports.DataColumnNumber7;
-                            report.DataColumnNumber8 = campaignReportData.Reports.DataColumnNumber8;
-                            report.DataColumnNumber9 = campaignReportData.Reports.DataColumnNumber9;
-                            report.DataColumnNumber10 = campaignReportData.Reports.DataColumnNumber10;
-                            report.DataColumnTextA = campaignReportData.Reports.DataColumnTextA;
-                            report.DataColumnTextB = campaignReportData.Reports.DataColumnTextB;
-                            report.DataColumnTextC = campaignReportData.Reports.DataColumnTextC;
-                            report.DataColumnTextD = campaignReportData.Reports.DataColumnTextD;
-                            report.DataColumnTextE = campaignReportData.Reports.DataColumnTextE;
-                            report.DataColumnTextF = campaignReportData.Reports.DataColumnTextF;
-                            report.DataColumnTextG = campaignReportData.Reports.DataColumnTextG;
-                            report.DataColumnTextH = campaignReportData.Reports.DataColumnTextH;
-                            report.DataColumnTextI = campaignReportData.Reports.DataColumnTextI;
-                            report.DataColumnTextJ = campaignReportData.Reports.DataColumnTextJ;
-                            report.Company = currentUser.Company;
-                            _context.Reports.Update(report);
-                        }
+                        report.LastEditDate = DateTime.Now;
+                        report.DataColumnNumber1 = campaignReportData.Reports.DataColumnNumber1;
+                        report.DataColumnNumber2 = campaignReportData.Reports.DataColumnNumber2;
+                        report.DataColumnNumber3 = campaignReportData.Reports.DataColumnNumber3;
+                        report.DataColumnNumber4 = campaignReportData.Reports.DataColumnNumber4;
+                        report.DataColumnNumber5 = campaignReportData.Reports.DataColumnNumber5;
+                        report.DataColumnNumber6 = campaignReportData.Reports.DataColumnNumber6;
+                        report.DataColumnNumber7 = campaignReportData.Reports.DataColumnNumber7;
+                        report.DataColumnNumber8 = campaignReportData.Reports.DataColumnNumber8;
+                        report.DataColumnNumber9 = campaignReportData.Reports.DataColumnNumber9;
+                        report.DataColumnNumber10 = campaignReportData.Reports.DataColumnNumber10;
+                        report.DataColumnTextA = campaignReportData.Reports.DataColumnTextA;
+                        report.DataColumnTextB = campaignReportData.Reports.DataColumnTextB;
+                        report.DataColumnTextC = campaignReportData.Reports.DataColumnTextC;
+                        report.DataColumnTextD = campaignReportData.Reports.DataColumnTextD;
+                        report.DataColumnTextE = campaignReportData.Reports.DataColumnTextE;
+                        report.DataColumnTextF = campaignReportData.Reports.DataColumnTextF;
+                        report.DataColumnTextG = campaignReportData.Reports.DataColumnTextG;
+                        report.DataColumnTextH = campaignReportData.Reports.DataColumnTextH;
+                        report.DataColumnTextI = campaignReportData.Reports.DataColumnTextI;
+                        report.DataColumnTextJ = campaignReportData.Reports.DataColumnTextJ;
+                        report.CompanyId = currentUser.CompanyId;
+                        _context.Reports.Update(report);
                     }
-                    _context.SaveChanges();
-                    return RedirectToAction("Index");
                 }
+                _context.SaveChanges();
+                return RedirectToAction("Index");
             }
             return View(Report);
         }
@@ -203,6 +204,11 @@ namespace Metrict.Controllers
             }
 
             var currentUser = await GetCurrentUserAsync();
+            if (currentUser.UserActive == false)
+            {
+                return NotFound();
+            }
+
             var reportFromDb = await _context.Reports.FirstOrDefaultAsync(u => u.Id == id);
 
             if (reportFromDb.ApplicationUserId != currentUser.Id)
@@ -215,41 +221,8 @@ namespace Metrict.Controllers
                 return Json(new { success = false, message = "Error While Deleting" });
             }
 
-            DeletedReport = new DeletedReport();
-            // add to its own method at a later date
-            DeletedReport.Id = reportFromDb.Id;
-            DeletedReport.ApplicationUserId = reportFromDb.ApplicationUserId;
-            DeletedReport.ApplicationUserName = reportFromDb.ApplicationUserName;
-            DeletedReport.CampaignId = reportFromDb.CampaignId;
-            DeletedReport.CampaignName = reportFromDb.CampaignName;
-            DeletedReport.ManagerId = reportFromDb.ManagerId;
-            DeletedReport.SubmissionDate = reportFromDb.SubmissionDate;
-            DeletedReport.LastEditDate = reportFromDb.LastEditDate;
-            DeletedReport.DataColumnNumber1 = reportFromDb.DataColumnNumber1;
-            DeletedReport.DataColumnNumber2 = reportFromDb.DataColumnNumber2;
-            DeletedReport.DataColumnNumber3 = reportFromDb.DataColumnNumber3;
-            DeletedReport.DataColumnNumber4 = reportFromDb.DataColumnNumber4;
-            DeletedReport.DataColumnNumber5 = reportFromDb.DataColumnNumber5;
-            DeletedReport.DataColumnNumber6 = reportFromDb.DataColumnNumber6;
-            DeletedReport.DataColumnNumber7 = reportFromDb.DataColumnNumber7;
-            DeletedReport.DataColumnNumber8 = reportFromDb.DataColumnNumber8;
-            DeletedReport.DataColumnNumber9 = reportFromDb.DataColumnNumber9;
-            DeletedReport.DataColumnNumber10 = reportFromDb.DataColumnNumber10;
-            DeletedReport.DataColumnTextA = reportFromDb.DataColumnTextA;
-            DeletedReport.DataColumnTextB = reportFromDb.DataColumnTextB;
-            DeletedReport.DataColumnTextC = reportFromDb.DataColumnTextC;
-            DeletedReport.DataColumnTextD = reportFromDb.DataColumnTextD;
-            DeletedReport.DataColumnTextE = reportFromDb.DataColumnTextE;
-            DeletedReport.DataColumnTextF = reportFromDb.DataColumnTextF;
-            DeletedReport.DataColumnTextG = reportFromDb.DataColumnTextG;
-            DeletedReport.DataColumnTextH = reportFromDb.DataColumnTextH;
-            DeletedReport.DataColumnTextI = reportFromDb.DataColumnTextI;
-            DeletedReport.DataColumnTextJ = reportFromDb.DataColumnTextJ;
-            // add to its own method at a later date
-            _context.DeletedReports.Add(DeletedReport);
-            await _context.SaveChangesAsync();
-
-            _context.Reports.Remove(reportFromDb);
+            reportFromDb.IsActive = false;
+            _context.Reports.Update(reportFromDb);
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Delete Successful" });
 
