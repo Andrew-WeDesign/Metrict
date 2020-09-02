@@ -412,7 +412,7 @@ namespace Metrict.Controllers
             ViewBag.ListofCampaigns = campaignList;
 
             List<ApplicationUser> applicationUserList = new List<ApplicationUser>();
-            applicationUserList = (from product in _context.ApplicationUsers select product).ToList();
+            applicationUserList = (from product in _context.ApplicationUsers.Where(x => x.CompanyId == currentUser.CompanyId) select product).ToList();
             ViewBag.ListofUsers = applicationUserList;
 
             return View();

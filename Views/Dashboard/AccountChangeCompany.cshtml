@@ -1,0 +1,45 @@
+﻿@model Metrict.Models.ApplicationUser
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>AccountChangeCompany</title>
+</head>
+<body>
+    <h1>ChangeCompany</h1>
+
+    <div class="border container" style="padding:30px;">
+        <form asp-action="AccountChangeCompany" method="post">
+            <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+            <input type="hidden" asp-for="UserRole" />
+            <div class="form-group row">
+                <select class="selectpicker select25p" asp-for="CompanyId" asp-items="@(new SelectList(ViewBag.ListofCompanies, "Id", "Name"))"></select>
+            </div>
+            <div class="form-group row">
+                <div class="col-3 offset-3">
+                    <button type="submit" class="btn btn-primary form-control">
+                        Update
+                    </button>
+                </div>
+                <div class="col-3">
+                    <a asp-action="Index" class="btn btn-success form-control">Back to account home</a>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script>
+        $(function () {
+            $(".selectpicker").chosen();
+        });
+    </script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+</body>
+</html>

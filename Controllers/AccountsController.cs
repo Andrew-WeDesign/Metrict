@@ -31,6 +31,7 @@ namespace Metrict.Controllers
 
         public IConfiguration Configuration { get; }
 
+
         public IActionResult Index()
         {
             return View();
@@ -57,6 +58,10 @@ namespace Metrict.Controllers
             var applicationUser = await _context.ApplicationUsers.FindAsync(currentUser.Id);
             var comp = await _context.Company.FirstOrDefaultAsync(x => x.Id == companyId);
             applicationUser.CompanyId = comp.Id;
+            applicationUser.UserRole = "Manager";
+            await _userManager.AddToRoleAsync(applicationUser, "Manager");
+            applicationUser.UserActive = true;
+
             if (ModelState.IsValid)
             {
                 try
@@ -79,6 +84,7 @@ namespace Metrict.Controllers
             }
             return View(applicationUser);
         }
+
 
         private bool ApplicationUserExists(string id)
         {

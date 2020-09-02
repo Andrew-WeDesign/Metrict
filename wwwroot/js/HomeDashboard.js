@@ -6,21 +6,13 @@ $("#myCampaigns").click(function () {
     $("#main").load("/Dashboard/Campaigns");
 });
 
-function Details(url) {
-    $("#main").load(url);
-};
+$("#changeCompany").click(function () {
+    $("#main").load("/Dashboard/AccountChangeCompany");
+});
 
-function Dashboard(url) {
-    $("#main").load(url);
-};
-
-function Edit(url) {
-    $("#main").load(url);
-};
-
-function StartReport(url) {
-    $("#main").load(url);
-};
+$("#addUserToCampaign").click(function () {
+    $("#main").load("/Dashboard/CampaignAddUserToCampaign");
+});
 
 function BackToReports() {
     $("#main").load("/Dashboard/Reports");
@@ -36,6 +28,22 @@ function StartReportChooseCampaign() {
 
 function StartNewCampaign() {
     $("#main").load("/Dashboard/CampaignUpsert")
+};
+
+function Details(url) {
+    $("#main").load(url);
+};
+
+function Dashboard(url) {
+    $("#main").load(url);
+};
+
+function Edit(url) {
+    $("#main").load(url);
+};
+
+function StartReport(url) {
+    $("#main").load(url);
 };
 
 function CampaignManageMembers(url) {

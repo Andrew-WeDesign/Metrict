@@ -430,6 +430,133 @@ namespace Metrict.Controllers
             return View();
         }
 
+        public async Task<IActionResult> CampaignAddUserToCampaign()
+        {
+            var currentUser = await GetCurrentUserAsync();
+            ViewBag.UserId = currentUser.Id;
+
+            List<Campaign> campaignList = new List<Campaign>();
+            campaignList = (from product in _context.Campaigns.Where(a => a.ManagerId == currentUser.Id) select product).ToList();
+            ViewBag.ListofCampaigns = campaignList;
+
+            List<ApplicationUser> applicationUserList = new List<ApplicationUser>();
+            applicationUserList = (from product in _context.ApplicationUsers.Where(x => x.CompanyId == currentUser.CompanyId) select product).ToList();
+            ViewBag.ListofUsers = applicationUserList;
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CampaignAddUserToCampaign(int CampaignId, string ApplicationUserId)
+        {
+            var campaign = await _context.Campaigns.FirstOrDefaultAsync(x => x.Id == CampaignId);
+            var applicationUser = await _context.ApplicationUsers.FirstOrDefaultAsync(x => x.Id == ApplicationUserId);
+
+            var currentUser = await GetCurrentUserAsync();
+            if (campaign.ManagerId != currentUser.Id)
+            {
+                return NotFound();
+            }
+
+            if (applicationUser.UserActive != true)
+            {
+                applicationUser.UserActive = true;
+                _context.ApplicationUsers.Update(applicationUser);
+                await _context.SaveChangesAsync();
+            }
+
+            CampaignUser campaignUser = new CampaignUser
+            {
+                Id = applicationUser.Id + campaign.Id,
+                CampaignId = campaign.Id,
+                CampaignName = campaign.Name,
+                ApplicationUserId = applicationUser.Id,
+                ApplicationUserFullName = applicationUser.FullName
+            };
+
+            if (!CampaignUserExists(campaignUser.Id))
+            {
+                _context.Add(campaignUser);
+                await _context.SaveChangesAsync();
+                if (applicationUser.UserRole == "NewUser")
+                {
+                    applicationUser.UserRole = "Employee";
+                    await _userManager.AddToRoleAsync(applicationUser, "Employee");
+                    if (ModelState.IsValid)
+                    {
+                        try
+                        {
+                            _context.Update(applicationUser);
+                            await _context.SaveChangesAsync();
+                        }
+                        catch (DbUpdateConcurrencyException)
+                        {
+                            if (!ApplicationUserExists(applicationUser.Id))
+                            {
+                                return NotFound();
+                            }
+                            else
+                            {
+                                throw;
+                            }
+                        }
+                    }
+                }
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
+
+
+
+        [HttpGet]
+        public async Task<IActionResult> AccountChangeCompany()
+        {
+            var currentUser = await GetCurrentUserAsync();
+            var applicationUser = await _context.ApplicationUsers.FindAsync(currentUser.Id);
+
+            List<Company> companyList = new List<Company>();
+            companyList = _context.Company.ToList();
+            ViewBag.ListofCompanies = companyList;
+
+
+            return View(applicationUser);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AccountChangeCompany(int companyId)
+        {
+            var currentUser = await GetCurrentUserAsync();
+            var applicationUser = await _context.ApplicationUsers.FindAsync(currentUser.Id);
+            var comp = await _context.Company.FirstOrDefaultAsync(x => x.Id == companyId);
+            applicationUser.CompanyId = comp.Id;
+            applicationUser.UserRole = "Manager";
+            await _userManager.AddToRoleAsync(applicationUser, "Manager");
+            applicationUser.UserActive = true;
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(applicationUser);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ApplicationUserExists(applicationUser.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(applicationUser);
+        }
 
 
 
@@ -454,6 +581,11 @@ namespace Metrict.Controllers
         private bool ManagerExists(string userRole, int companyId)
         {
             return _context.ApplicationUsers.Where(x => x.CompanyId == companyId).Any(e => e.UserRole == userRole);
+        }
+
+        private bool CampaignUserExists(string id)
+        {
+            return _context.CampaignUsers.Any(e => e.Id == id);
         }
 
     }
