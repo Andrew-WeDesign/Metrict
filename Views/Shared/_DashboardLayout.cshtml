@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Dashboard"] - Metrict</title>
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
@@ -98,7 +99,7 @@
                         <span class="menu-collapsed">Campaigns</span>
                     </a>
                     <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
-                        <span class="menu-collapsed">Tables</span>
+                        <span class="menu-collapsed">Tasks</span>
                     </a>
                 </li>
                 <li>
@@ -113,16 +114,19 @@
                 <!-- Submenu content -->
                 <li id="submenu2" class="collapse sidebar-submenu">
                     <a href="#" id="changeCompany" class="list-group-item list-group-item-action bg-dark text-white">
-                        <span class="menu-collapsed">Change Company</span>
+                        <span class="menu-collapsed">Change your company</span>
                     </a>
                     <a href="#" id="addUserToCampaign" class="list-group-item list-group-item-action bg-dark text-white">
                         <span class="menu-collapsed">Add a user to a campaign</span>
                     </a>
-                    <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
-                        <span class="menu-collapsed">Settings</span>
+                    <a href="#" id="inviteUsers" class="list-group-item list-group-item-action bg-dark text-white">
+                        <span class="menu-collapsed">Email invitation</span>
                     </a>
                     <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
-                        <span class="menu-collapsed">Password</span>
+                        <span class="menu-collapsed">New Managers</span>
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+                        <span class="menu-collapsed">Reassign employees/managers</span>
                     </a>
                 </li>
                 <li>

@@ -22,6 +22,7 @@ namespace Metrict.Data
         public DbSet<CampaignUser> CampaignUsers { get; set; }
         public DbSet<Report> Reports { get; set; }
         public DbSet<Company> Company { get; set; }
+        public DbSet<EmployeeTask> EmployeeTask { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -30,6 +31,7 @@ namespace Metrict.Data
             modelBuilder.Entity<CampaignUser>().ToTable("CampaignUser");
             modelBuilder.Entity<Report>().ToTable("Report");
             modelBuilder.Entity<Company>().ToTable("Company");
+            modelBuilder.Entity<EmployeeTask>().ToTable("EmployeeTasks");
             base.OnModelCreating(modelBuilder);
         }
 

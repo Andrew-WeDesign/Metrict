@@ -290,3 +290,15 @@ E:\Repos\Metrict\Metrict\obj\Debug\netcoreapp3.1\Razor\Views\Dashboard\ReportCre
 E:\Repos\Metrict\Metrict\obj\Debug\netcoreapp3.1\Razor\Views\Dashboard\CampaignManageCampaignUser.cshtml.g.cs
 E:\Repos\Metrict\Metrict\obj\Debug\netcoreapp3.1\Razor\Views\Dashboard\CampaignNewCampaignUser.cshtml.g.cs
 E:\Repos\Metrict\Metrict\obj\Debug\netcoreapp3.1\Razor\Views\Dashboard\AccountChangeCompany.cshtml.g.cs
+E:\Repos\Metrict\Metrict\obj\Debug\netcoreapp3.1\Razor\Views\Dashboard\CampaignAddUserToCampaign.cshtml.g.cs
+E:\Repos\Metrict\Metrict\obj\Debug\netcoreapp3.1\Razor\Views\Dashboard\AccountInviteUsers.cshtml.g.cs
+E:\Repos\Metrict\Metrict\obj\Debug\netcoreapp3.1\Razor\Views\Dashboard\ManagerGetAllEmployeeReports.cshtml.g.cs
+E:\Repos\Metrict\Metrict\obj\Debug\netcoreapp3.1\Razor\Views\Dashboard\AccountInviteUsersBulk.cshtml.g.cs
+E:\Repos\Metrict\Metrict\obj\Debug\netcoreapp3.1\Razor\Views\Dashboard\ManagerNewManager.cshtml.g.cs
+E:\Repos\Metrict\Metrict\obj\Debug\netcoreapp3.1\Razor\Views\Dashboard\AccountsIndex.cshtml.g.cs
+E:\Repos\Metrict\Metrict\obj\Debug\netcoreapp3.1\Razor\Views\Dashboard\ManagerReassignEmployeeManager.cshtml.g.cs
+E:\Repos\Metrict\Metrict\obj\Debug\netcoreapp3.1\Razor\Views\EmployeeTasks\Index.cshtml.g.cs
+E:\Repos\Metrict\Metrict\obj\Debug\netcoreapp3.1\Razor\Views\EmployeeTasks\Create.cshtml.g.cs
+E:\Repos\Metrict\Metrict\obj\Debug\netcoreapp3.1\Razor\Views\EmployeeTasks\Details.cshtml.g.cs
+E:\Repos\Metrict\Metrict\obj\Debug\netcoreapp3.1\Razor\Views\EmployeeTasks\Edit.cshtml.g.cs
+E:\Repos\Metrict\Metrict\obj\Debug\netcoreapp3.1\Razor\Views\EmployeeTasks\Calendar.cshtml.g.cs

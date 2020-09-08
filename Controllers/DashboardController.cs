@@ -12,6 +12,7 @@ using Metrict.Models.ReportViewModels;
 using Metrict.Models.CampaignViewModels;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace Metrict.Controllers
 {
@@ -20,11 +21,13 @@ namespace Metrict.Controllers
 
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IEmailSender _emailSender;
 
-        public DashboardController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public DashboardController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IEmailSender emailSender)
         {
             _userManager = userManager;
             _context = context;
+            _emailSender = emailSender;
         }
 
         [BindProperty]
@@ -175,8 +178,6 @@ namespace Metrict.Controllers
             }
             return View(Report);
         }
-
-
 
 
 
@@ -430,6 +431,68 @@ namespace Metrict.Controllers
             return View();
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CampaignNewCampaignUser(int CampaignId, string ApplicationUserId)
+        {
+            var campaign = await _context.Campaigns.FirstOrDefaultAsync(x => x.Id == CampaignId);
+            var applicationUser = await _context.ApplicationUsers.FirstOrDefaultAsync(x => x.Id == ApplicationUserId);
+
+            var currentUser = await GetCurrentUserAsync();
+            if (campaign.ManagerId != currentUser.Id)
+            {
+                return NotFound();
+            }
+
+            if (applicationUser.UserActive != true)
+            {
+                applicationUser.UserActive = true;
+                _context.ApplicationUsers.Update(applicationUser);
+                await _context.SaveChangesAsync();
+            }
+
+            CampaignUser campaignUser = new CampaignUser
+            {
+                Id = applicationUser.Id + campaign.Id,
+                CampaignId = campaign.Id,
+                CampaignName = campaign.Name,
+                ApplicationUserId = applicationUser.Id,
+                ApplicationUserFullName = applicationUser.FullName
+            };
+
+            if (!CampaignUserExists(campaignUser.Id))
+            {
+                _context.Add(campaignUser);
+                await _context.SaveChangesAsync();
+                if (applicationUser.UserRole == "NewUser")
+                {
+                    applicationUser.UserRole = "Employee";
+                    await _userManager.AddToRoleAsync(applicationUser, "Employee");
+                    applicationUser.ManagerID = currentUser.Id;
+                    if (ModelState.IsValid)
+                    {
+                        try
+                        {
+                            _context.Update(applicationUser);
+                            await _context.SaveChangesAsync();
+                        }
+                        catch (DbUpdateConcurrencyException)
+                        {
+                            if (!ApplicationUserExists(applicationUser.Id))
+                            {
+                                return NotFound();
+                            }
+                            else
+                            {
+                                throw;
+                            }
+                        }
+                    }
+                }
+            }
+            return RedirectToAction("Dashboard", new { id = CampaignId });
+        }
+
         public async Task<IActionResult> CampaignAddUserToCampaign()
         {
             var currentUser = await GetCurrentUserAsync();
@@ -483,6 +546,7 @@ namespace Metrict.Controllers
                 {
                     applicationUser.UserRole = "Employee";
                     await _userManager.AddToRoleAsync(applicationUser, "Employee");
+                    applicationUser.ManagerID = currentUser.Id;
                     if (ModelState.IsValid)
                     {
                         try
@@ -509,6 +573,12 @@ namespace Metrict.Controllers
 
 
 
+        
+        [HttpGet]
+        public IActionResult AccountsIndex()
+        {
+            return View();
+        }
 
         [HttpGet]
         public async Task<IActionResult> AccountChangeCompany()
@@ -557,6 +627,181 @@ namespace Metrict.Controllers
             }
             return View(applicationUser);
         }
+
+        [HttpGet]
+        public IActionResult AccountInviteUsers()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AccountInviteUsers(string email)
+        {
+            var currentUser = await GetCurrentUserAsync();
+            var comp = await _context.Company.FirstOrDefaultAsync(x => x.Id == currentUser.CompanyId);
+            if (email != null)
+            {
+                var callbackUrl = $"https://localhost:44322/Identity/Account/Register?company={comp.Name}";
+
+                await _emailSender.SendEmailAsync(email, "Sign up for Metrict",
+                    $"Start using Metrict for {comp.Name} <a href='{callbackUrl}'>clicking here</a>.");
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult AccountInviteUsersBulk()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AccountInviteUsersBulk(string commaSeparatedEmail)
+        {
+            var currentUser = await GetCurrentUserAsync();
+            var comp = await _context.Company.FirstOrDefaultAsync(x => x.Id == currentUser.CompanyId);
+            string commaSepEmail = string.Concat(commaSeparatedEmail.Where(c => !char.IsWhiteSpace(c)));
+            string[] emailSplit = commaSepEmail.Split(',');
+            foreach (string email in emailSplit)
+            {
+                var callbackUrl = $"https://localhost:44322/Identity/Account/Register?company={comp.Name}";
+
+                await _emailSender.SendEmailAsync(email, "Sign up for Metrict",
+                    $"Start using Metrict for {comp.Name} <a href='{callbackUrl}'>clicking here</a>.");
+
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
+
+
+
+        [HttpGet]
+        public async Task<IActionResult> ManagerGetAllEmployeeReports()
+        {
+            var currentUser = await GetCurrentUserAsync();
+
+            return Json(new { data = await _context.Reports.Where(x => x.ManagerId == currentUser.Id).ToListAsync() });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ManagerNewManager()
+        {
+            var currentUser = await GetCurrentUserAsync();
+            ViewBag.UserId = currentUser.Id;
+
+            List<ApplicationUser> applicationUserList = new List<ApplicationUser>();
+            applicationUserList = (from product in _context.ApplicationUsers.Where(x => x.CompanyId == currentUser.CompanyId) select product).ToList();
+            ViewBag.ListofUsers = applicationUserList;
+
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ManagerNewManager(string applicationUserId)
+        {
+            var currentUser = await GetCurrentUserAsync();
+            if (currentUser.UserRole == "NewUser" || currentUser.UserRole == "Employee" || currentUser.UserRole == "TeamLead")
+            {
+                return Json(new { success = false, message = "Error During Promotion" });
+            }
+
+            var applicationUser = await _context.ApplicationUsers.FindAsync(applicationUserId);
+            if (applicationUser.UserActive != true)
+            {
+                applicationUser.UserActive = true;
+                _context.ApplicationUsers.Update(applicationUser);
+                await _context.SaveChangesAsync();
+            }
+
+            applicationUser.UserRole = "Manager";
+            await _userManager.AddToRoleAsync(applicationUser, "Manager");
+            if (currentUser.UserRole == "Executive" || currentUser.UserRole == "Administrator")
+            {
+                applicationUser.ManagerID = currentUser.Id;
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(applicationUser);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ApplicationUserExists(applicationUser.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
+
+
+            return Json(new { success = true, message = "Manager Promotion Successful" });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ManagerReassignEmployeeManager()
+        {
+            var currentUser = await GetCurrentUserAsync();
+            ViewBag.UserId = currentUser.Id;
+
+            List<ApplicationUser> applicationUserList = new List<ApplicationUser>();
+            applicationUserList = (from product in _context.ApplicationUsers.Where(x => x.CompanyId == currentUser.CompanyId) select product).ToList();
+            ViewBag.ListofUsers = applicationUserList;
+
+            List<ApplicationUser> managerList = new List<ApplicationUser>();
+            managerList = (from product in _context.ApplicationUsers.Where(x => x.CompanyId == currentUser.CompanyId).Where(x => x.UserRole == "Manager") select product).ToList();
+            ViewBag.ManagerList = managerList;
+
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ManagerReassignEmployeeManager(string applicationUserId, string managerId)
+        {
+            var currentUser = await GetCurrentUserAsync();
+            if (currentUser.UserRole == "NewUser" || currentUser.UserRole == "Employee" || currentUser.UserRole == "TeamLead")
+            {
+                return Json(new { success = false, message = "Error During Assignment" });
+            }
+            var applicationUser = await _context.ApplicationUsers.FindAsync(applicationUserId);
+            var managerUser = await _context.ApplicationUsers.FindAsync(managerId);
+            if (managerUser.UserRole == "NewUser" || managerUser.UserRole == "Employee" || managerUser.UserRole == "TeamLead")
+            {
+                return Json(new { success = false, message = "Error During Assignment" });
+            }
+
+            if (managerUser.UserActive != true)
+            {
+                return Json(new { success = false, message = "That manager is not active" });
+            }
+
+            if (applicationUser.UserActive != true)
+            {
+                applicationUser.UserActive = true;
+            }
+            if (applicationUser.UserRole == "NewUser")
+            {
+                applicationUser.UserRole = "Employee";
+                await _userManager.AddToRoleAsync(applicationUser, "Employee");
+            }
+            applicationUser.ManagerID = managerUser.Id;
+            _context.ApplicationUsers.Update(applicationUser);
+            await _context.SaveChangesAsync();
+
+            return Json(new { success = true, message = "Manager Assignment Successful" });
+        }
+
+
 
 
 

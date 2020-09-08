@@ -320,3 +320,8 @@ Extra (xl) large devices (large desktops, 1200px and up)
     text-align: center;
     vertical-align: middle !important;
 }
+
+/* makes calender page comments good*/
+.modal-body {
+    white-space: pre-wrap;
+}

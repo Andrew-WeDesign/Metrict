@@ -15,7 +15,7 @@
     <h1>Add a user to @ViewBag.nameOfCampaign</h1>
 
     <div>
-        <form asp-action="NewCampaignUser" method="post">
+        <form asp-action="CampaignNewCampaignUser" method="post">
             <input type="hidden" asp-for="CampaignId" value="@ViewBag.IdCampaign" />
 
             <select class="selectpicker form-control" asp-for="ApplicationUserId" asp-items="@(new SelectList(ViewBag.ListOfUsers, "Id", "UserName"))"></select>
@@ -25,9 +25,9 @@
     </div>
 
     <script>
-            $(function () {
-                $(".selectpicker").chosen();
-            });
+        $(function () {
+            $(".selectpicker").chosen();
+        });
     </script>
 
 </body>

@@ -11,6 +11,8 @@
     <Compile Remove="Data\Migrations\20200827001241_DatabaseUpdateRemoveKey.Designer.cs" />
     <Compile Remove="Data\Migrations\20200827002054_BackupDeletedReportsAndCampaigns.cs" />
     <Compile Remove="Data\Migrations\20200827002054_BackupDeletedReportsAndCampaigns.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200905075827_EmployeeTasks.cs" />
+    <Compile Remove="Data\Migrations\20200905075827_EmployeeTasks.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

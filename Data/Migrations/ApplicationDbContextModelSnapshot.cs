@@ -240,6 +240,76 @@ namespace Metrict.Migrations
                     b.ToTable("Company");
                 });
 
+            modelBuilder.Entity("Metrict.Models.EmployeeTask", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ApplicationUserFullName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ApplicationUserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("AssignedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Comments")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CompletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DueDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("EmployeeReply")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ManagerFullName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ManagerId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("ManagerReply")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ManagerUserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ReviewDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Severity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TaskDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("WorkInProgressDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("CompanyId");
+
+                    b.ToTable("EmployeeTasks");
+                });
+
             modelBuilder.Entity("Metrict.Models.Report", b =>
                 {
                     b.Property<int>("Id")
@@ -487,6 +557,19 @@ namespace Metrict.Migrations
                     b.HasOne("Metrict.Models.Campaign", "Campaign")
                         .WithMany()
                         .HasForeignKey("CampaignId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Metrict.Models.EmployeeTask", b =>
+                {
+                    b.HasOne("Metrict.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("Metrict.Models.Company", "Company")
+                        .WithMany()
+                        .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

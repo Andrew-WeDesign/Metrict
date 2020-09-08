@@ -378,6 +378,7 @@ namespace Metrict.Controllers
                 {
                     applicationUser.UserRole = "Employee";
                     await _userManager.AddToRoleAsync(applicationUser, "Employee");
+                    applicationUser.ManagerID = currentUser.Id;
                     if (ModelState.IsValid)
                     {
                         try
@@ -455,6 +456,7 @@ namespace Metrict.Controllers
                 {
                     applicationUser.UserRole = "Employee";
                     await _userManager.AddToRoleAsync(applicationUser, "Employee");
+                    applicationUser.ManagerID = currentUser.Id;
                     if (ModelState.IsValid)
                     {
                         try

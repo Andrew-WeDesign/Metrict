@@ -12,20 +12,32 @@ namespace Metrict.Models
         public int Id { get; set; }
         public string ApplicationUserId { get; set; }
         public string ApplicationUserName { get; set; }
+        public string ApplicationUserFullName { get; set; }
         public string ManagerId { get; set; }
         public string ManagerUserName { get; set; }
-
-        // Add some text fields
-        // 
-        // Task Name
-        // Manager's instruction
-        // Comments for back and forth dialog
-        // Severity Level
-        // Due Date
-        // Status Assigned, WorkInProgress, Review, Completed
-        // Bool for something like need manager response OR an unread message field to notify employees/managers when someone has responded on a task
+        public string ManagerFullName { get; set; }
+        public string TaskDescription { get; set; }
+        public string Comments { get; set; }
+        public LevelOfSeverity Severity { get; set; }
+        public DateTime AssignedDate { get; set; }
+        public DateTime DueDate { get; set; }
+        public StatusOfTask Status { get; set; }
+        public DateTime WorkInProgressDate { get; set; }
+        public DateTime ReviewDate { get; set; }
+        public DateTime CompletedDate { get; set; }
+        public bool ManagerReply { get; set; }
+        public bool EmployeeReply { get; set; }
+        public int CompanyId { get; set; }
 
         public ApplicationUser ApplicationUser { get; set; }
-
+        public Company Company { get; set; }
+    }
+    public enum LevelOfSeverity
+    {
+        Lowest, Low, Normal, High, Highest
+    }
+    public enum StatusOfTask
+    {
+        Assigned, WorkInProgress, Review, Completed
     }
 }

@@ -12,24 +12,20 @@
     <title>CampaignAddUserToCampaign</title>
 </head>
 <body>
-    <div class="container">
-        <main role="main" class="pb-3">
-            <h1>New Campaign Users</h1>
+    <h1>New Campaign Users</h1>
 
-            <div class="vh100">
-                <form asp-action="CampaignAddUserToCampaign" method="post">
-                    <select class="selectpicker select25p" asp-for="CampaignId" asp-items="@(new SelectList(ViewBag.ListofCampaigns, "Id", "Name"))"></select>
-                    <select class="selectpicker select25p" asp-for="ApplicationUserId" asp-items="@(new SelectList(ViewBag.ListofUsers, "Id", "FullName"))"></select>
-                    <input type="submit" value="Add New Member" />
-                </form>
-            </div>
-
-            <script>
-                $(function () {
-                    $(".selectpicker").chosen();
-                });
-            </script>
-        </main>
+    <div>
+        <form asp-action="CampaignAddUserToCampaign" method="post">
+            <select class="selectpicker select25p" asp-for="CampaignId" asp-items="@(new SelectList(ViewBag.ListofCampaigns, "Id", "Name"))"></select>
+            <select class="selectpicker select25p" asp-for="ApplicationUserId" asp-items="@(new SelectList(ViewBag.ListofUsers, "Id", "FullName"))"></select>
+            <input type="submit" value="Add New Member" />
+        </form>
     </div>
+
+    <script>
+        $(function () {
+            $(".selectpicker").chosen();
+        });
+    </script>
 </body>
 </html>

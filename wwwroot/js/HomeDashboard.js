@@ -6,28 +6,36 @@ $("#myCampaigns").click(function () {
     $("#main").load("/Dashboard/Campaigns");
 });
 
+$("#addUserToCampaign").click(function () {
+    $("#main").load("/Dashboard/CampaignAddUserToCampaign");
+});
+
 $("#changeCompany").click(function () {
     $("#main").load("/Dashboard/AccountChangeCompany");
 });
 
-$("#addUserToCampaign").click(function () {
-    $("#main").load("/Dashboard/CampaignAddUserToCampaign");
+$("#inviteUsers").click(function () {
+    $("#main").load("/Dashboard/AccountInviteUsers");
 });
 
 function BackToReports() {
     $("#main").load("/Dashboard/Reports");
 };
 
-function BackToCampaigns() {
-    $("#main").load("/Dashboard/Campaigns");
-};
-
 function StartReportChooseCampaign() {
     $("#main").load("/Dashboard/ReportStartReport")
 };
 
+function BackToCampaigns() {
+    $("#main").load("/Dashboard/Campaigns");
+};
+
 function StartNewCampaign() {
     $("#main").load("/Dashboard/CampaignUpsert")
+};
+
+function BackToAccounts() {
+    $("#main").load("/Dashboard/Accounts")
 };
 
 function Details(url) {

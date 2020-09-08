@@ -1,0 +1,34 @@
+﻿@model Metrict.Models.ApplicationUser
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ManagerReassignEmployeeManager</title>
+</head>
+<body>
+    <h1>Reassign Employee Manager</h1>
+
+    <div>
+        <form asp-action="CampaignAddUserToCampaign" method="post">
+            <p>Employee:</p>
+            <select class="selectpicker select25p" asp-for="Id" asp-items="@(new SelectList(ViewBag.ListofUsers, "Id", "FullName"))"></select>
+            <p>Manager</p>
+            <select class="selectpicker select25p" asp-for="Id" asp-items="@(new SelectList(ViewBag.ManagerList, "Id", "FullName"))"></select>
+            <input type="submit" value="Reassign" />
+        </form>
+    </div>
+
+    <script>
+        $(function () {
+            $(".selectpicker").chosen();
+        });
+    </script>
+
+</body>
+</html>

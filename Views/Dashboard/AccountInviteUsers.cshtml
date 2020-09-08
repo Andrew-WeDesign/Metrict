@@ -1,0 +1,40 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>AccountInviteUsers</title>
+</head>
+<body>
+    <h1>InviteUsers</h1>
+
+    <div class="border container" style="padding:30px;">
+        <form asp-action="AccountInviteUsers" method="post">
+            <div class="form-group row">
+                <div class="col-3">
+                    <label for="email"></label>
+                </div>
+                <div class="col-6">
+                    <input type="email" id="email" name="email" class="form-control" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-3 offset-3">
+                    <button type="submit" class="btn btn-primary form-control">
+                        Send Invite
+                    </button>
+                </div>
+                <div class="col-3">
+                    <a href="#" onclick="BackToAccounts()" class="btn btn-danger form-control">Back to my account</a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>

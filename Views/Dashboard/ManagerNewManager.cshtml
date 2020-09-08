@@ -1,0 +1,31 @@
+﻿@model Metrict.Models.ApplicationUser
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Promote a New Manager</title>
+</head>
+<body>
+    <h1>Promote a user to manager</h1>
+
+    <div>
+        <form asp-action="CampaignAddUserToCampaign" method="post">
+            <select class="selectpicker select25p" asp-for="Id" asp-items="@(new SelectList(ViewBag.ListofUsers, "Id", "FullName"))"></select>
+            <input type="submit" value="Promote to Manager" />
+        </form>
+    </div>
+
+    <script>
+        $(function () {
+            $(".selectpicker").chosen();
+        });
+    </script>
+
+</body>
+</html>

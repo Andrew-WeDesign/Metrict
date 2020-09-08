@@ -36,7 +36,7 @@ namespace Metrict
             //adding custom roles
             var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var UserManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-            string[] roleNames = { "NewUser", "Employee", "Team Lead", "Manager", "Administrator", "Executive", "Terminated" };
+            string[] roleNames = { "NewUser", "Employee", "TeamLead", "Manager", "Administrator", "Executive", "Terminated" };
             IdentityResult roleResult;
             foreach (var roleName in roleNames)
             {
