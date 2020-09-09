@@ -140,6 +140,7 @@ namespace Metrict.Controllers
                     //campaignReportData.Reports.CampaignId = campaignReportData.Reports.CampaignId;
                     campaignReportData.Reports.CampaignName = campaign.Name;
                     campaignReportData.Reports.CompanyId = currentUser.CompanyId;
+                    campaignReportData.Reports.IsActive = true;
                     _context.Reports.Add(campaignReportData.Reports);
                 }
                 else
@@ -246,6 +247,7 @@ namespace Metrict.Controllers
                 .Where(y => y.CampaignId == id)
                               select y)
                 .Where(y => y.SubmissionDate >= dt)
+                .Where(y => y.IsActive == true)
                 .ToList();
             int reportDataCount = reportDataList.Count();
             ViewBag.reportDataCount = reportDataCount;
@@ -493,7 +495,7 @@ namespace Metrict.Controllers
                     }
                 }
             }
-            return RedirectToAction("Dashboard", new { id = CampaignId });
+            return RedirectToAction("Index");
         }
 
         public async Task<IActionResult> CampaignAddUserToCampaign()
@@ -578,7 +580,7 @@ namespace Metrict.Controllers
 
         
         [HttpGet]
-        public IActionResult AccountsIndex()
+        public IActionResult Accounts()
         {
             return View();
         }
@@ -604,8 +606,8 @@ namespace Metrict.Controllers
             var applicationUser = await _context.ApplicationUsers.FindAsync(currentUser.Id);
             var comp = await _context.Company.FirstOrDefaultAsync(x => x.Id == companyId);
             applicationUser.CompanyId = comp.Id;
-            applicationUser.UserRole = "Manager";
-            await _userManager.AddToRoleAsync(applicationUser, "Manager");
+            applicationUser.UserRole = "NewUser";
+            await _userManager.AddToRoleAsync(applicationUser, "NewUser");
             applicationUser.UserActive = true;
 
             if (ModelState.IsValid)
@@ -746,9 +748,8 @@ namespace Metrict.Controllers
                     }
                 }
             }
-
-
-            return Json(new { success = true, message = "Manager Promotion Successful" });
+            //return Json(new { success = true, message = "Manager Promotion Successful" });
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
@@ -801,7 +802,8 @@ namespace Metrict.Controllers
             _context.ApplicationUsers.Update(applicationUser);
             await _context.SaveChangesAsync();
 
-            return Json(new { success = true, message = "Manager Assignment Successful" });
+            //return Json(new { success = true, message = "Manager Assignment Successful" });
+            return RedirectToAction("Index");
         }
 
 

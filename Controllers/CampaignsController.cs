@@ -555,6 +555,7 @@ namespace Metrict.Controllers
                 .Where(y => y.CampaignId == id)
                               select y)
                 .Where(y => y.SubmissionDate >= dt)
+                .Where(y => y.IsActive == true)
                 .ToList();
             int reportDataCount = reportDataList.Count();
             ViewBag.reportDataCount = reportDataCount;

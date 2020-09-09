@@ -5,10 +5,10 @@
             center: 'prev title next',
             right: '',
         },
-        eventClick: function (event, jsEvent, view) {
+        eventClick: function (event) {
             $('#modalTitle').html(event.title);
             $('#modalBody').html(event.description);
-            $('#eventUrl').attr('href', event.Url);
+            $('#eventUrl').attr('href', event.url);
             $('#fullCalModal').modal();
             return false;
         },

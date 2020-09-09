@@ -30,7 +30,7 @@ function loadDataTable() {
                         </a>
                         &nbsp;
                         <a class='btn btn-danger text-white' style='cursor:pointer; width:100px;'
-                            onclick=Delete('/Tasks/Delete?id='+${data})>
+                            onclick=Delete('/EmployeeTasks/Delete?id='+${data})>
                             Delete
                         </a>
                         </div>`;

@@ -153,6 +153,7 @@ namespace Metrict.Controllers
                     //campaignReportData.Reports.CampaignId = campaignReportData.Reports.CampaignId;
                     campaignReportData.Reports.CampaignName = campaign.Name;
                     campaignReportData.Reports.CompanyId = currentUser.CompanyId;
+                    campaignReportData.Reports.IsActive = true;
                     _context.Reports.Add(campaignReportData.Reports);
                 }
                 else

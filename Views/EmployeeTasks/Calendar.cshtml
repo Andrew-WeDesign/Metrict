@@ -55,11 +55,10 @@
                 eventClick: function (event, jsEvent, view) {
                     $('#modalTitle').html(event.title);
                     $('#modalBody').html(event.description);
-                    $('#eventUrl').attr('href', event.Url);
+                    $('#eventUrl').attr('href', event.url);
                     $('#fullCalModal').modal();
                     return false;
                 },
-                @*events: '@Url.Action("GetAllForCalendar", "EmployeeTasks")'*@
                 events: 'https://localhost:44322/employeetasks/getallforcalendar'
             });
         });

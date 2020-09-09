@@ -12,7 +12,7 @@ namespace Metrict.Services
     {
         public Task SendEmailAsync(string email, string subject, string message)
         {
-            string sendGridKey = "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";
+            string sendGridKey = "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";
 
             return Execute(sendGridKey, subject, message, email);
         }
@@ -23,7 +23,7 @@ namespace Metrict.Services
             string sendGridUser = "Metrict";
             var msg = new SendGridMessage()
             {
-                From = new EmailAddress("services@metrict.com", sendGridUser),
+                From = new EmailAddress("metrictreporting@gmail.com", sendGridUser),
                 Subject = subject,
                 PlainTextContent = message,
                 HtmlContent = message

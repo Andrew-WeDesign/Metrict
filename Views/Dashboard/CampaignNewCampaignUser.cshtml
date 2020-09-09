@@ -14,13 +14,27 @@
 <body>
     <h1>Add a user to @ViewBag.nameOfCampaign</h1>
 
-    <div>
+    <div class="border container" style="padding:30px;">
         <form asp-action="CampaignNewCampaignUser" method="post">
             <input type="hidden" asp-for="CampaignId" value="@ViewBag.IdCampaign" />
-
-            <select class="selectpicker form-control" asp-for="ApplicationUserId" asp-items="@(new SelectList(ViewBag.ListOfUsers, "Id", "UserName"))"></select>
-
-            <input type="submit" value="Add New Member" />
+            <div class="form-group row">
+                <div class="col-3">
+                    <p>Campaign:</p>
+                </div>
+                <div class="col-6">
+                    <select class="selectpicker form-control" asp-for="ApplicationUserId" asp-items="@(new SelectList(ViewBag.ListOfUsers, "Id", "UserName"))"></select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-3 offset-3">
+                    <button type="submit" class="btn btn-primary form-control">
+                        Add to Campaign
+                    </button>
+                </div>
+                <div class="col-3">
+                    <a href="#" onclick="BackToCampaigns()" class="btn btn-danger form-control">Back to my campaigns</a>
+                </div>
+            </div>
         </form>
     </div>
 

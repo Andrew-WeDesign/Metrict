@@ -295,7 +295,6 @@ E:\Repos\Metrict\Metrict\obj\Debug\netcoreapp3.1\Razor\Views\Dashboard\AccountIn
 E:\Repos\Metrict\Metrict\obj\Debug\netcoreapp3.1\Razor\Views\Dashboard\ManagerGetAllEmployeeReports.cshtml.g.cs
 E:\Repos\Metrict\Metrict\obj\Debug\netcoreapp3.1\Razor\Views\Dashboard\AccountInviteUsersBulk.cshtml.g.cs
 E:\Repos\Metrict\Metrict\obj\Debug\netcoreapp3.1\Razor\Views\Dashboard\ManagerNewManager.cshtml.g.cs
-E:\Repos\Metrict\Metrict\obj\Debug\netcoreapp3.1\Razor\Views\Dashboard\AccountsIndex.cshtml.g.cs
 E:\Repos\Metrict\Metrict\obj\Debug\netcoreapp3.1\Razor\Views\Dashboard\ManagerReassignEmployeeManager.cshtml.g.cs
 E:\Repos\Metrict\Metrict\obj\Debug\netcoreapp3.1\Razor\Views\EmployeeTasks\Index.cshtml.g.cs
 E:\Repos\Metrict\Metrict\obj\Debug\netcoreapp3.1\Razor\Views\EmployeeTasks\Create.cshtml.g.cs
@@ -307,3 +306,4 @@ E:\Repos\Metrict\Metrict\obj\Debug\netcoreapp3.1\Razor\Views\Dashboard\TaskEdit.
 E:\Repos\Metrict\Metrict\obj\Debug\netcoreapp3.1\Razor\Views\Dashboard\TaskCreate.cshtml.g.cs
 E:\Repos\Metrict\Metrict\obj\Debug\netcoreapp3.1\Razor\Views\Dashboard\TaskDetails.cshtml.g.cs
 E:\Repos\Metrict\Metrict\obj\Debug\netcoreapp3.1\Razor\Views\Dashboard\TaskCalendar.cshtml.g.cs
+E:\Repos\Metrict\Metrict\obj\Debug\netcoreapp3.1\Razor\Views\Dashboard\Accounts.cshtml.g.cs

@@ -27,18 +27,19 @@
     </p>
 
     @*<a href="/Campaigns/ManageCampaignUser?id=@Model.Id" class='btn btn-success text-white' style='cursor:pointer; width:100px;'>
-        Manage Members
-    </a>*@
-    <a href="#" onclick="CampaignManageMembers('/Dashboard/CampaignManageCampaignUser?id='+@Model.Id)" class='btn btn-success text-white' style='cursor:pointer; width:100px;'>
+            Manage Members
+        </a>*@
+    <a href="#" onclick="CampaignManageMembers('/Dashboard/CampaignManageCampaignUser?id='+@Model.Id)" class='btn btn-success text-white' style='cursor:pointer; width:150px;'>
         Manage Members
     </a>
 
     @*<a href="/Campaigns/NewCampaignUser?id=@Model.Id" class='btn btn-success text-white' style='cursor:pointer; width:100px;'>
-        Add New Members
-    </a>*@
-    <a href="#" onclick="CampaignNewMembers('/Dashboard/CampaignNewCampaignUser?id='+@Model.Id)"class='btn btn-success text-white' style='cursor:pointer; width:100px;'>
+            Add New Members
+        </a>*@
+    <a href="#" onclick="CampaignNewMembers('/Dashboard/CampaignNewCampaignUser?id='+@Model.Id)" class='btn btn-success text-white' style='cursor:pointer; width:150px;'>
         Add New Members
     </a>
+    <a href="#" onclick="BackToCampaigns()" class="btn btn-danger" style='cursor:pointer; width:150px;'>Back to my campaigns</a>
 
     <div id="chart_container">
         <canvas id="bar_chart">

@@ -39,6 +39,7 @@ namespace Metrict.Controllers
             public DateTime StartDate { get; set; }
             public DateTime EndDate { get; set; }
             public string Location { get; set; }
+            public string Url { get; set; }
             public string BackgroundColor { get; set; }
             public string BorderColor { get; set; }
         }
@@ -165,6 +166,7 @@ namespace Metrict.Controllers
                 description = e.Comments.Replace("<br />", "\r\n"),
                 start = e.DueDate.ToString("MM/dd/yyyy"),
                 end = e.DueDate.ToString("MM/dd/yyyy"),
+                url = "https://localhost:44322/EmployeeTasks/Details?id=" + e.Id.ToString(),
                 backgroundColor = FullCalBgColor(e.Status),
                 borderColor = FullCalBorderColor(e.ManagerId, currentUser.Id)
             }).ToListAsync();
@@ -219,7 +221,7 @@ namespace Metrict.Controllers
             return View();
         }
 
-        [HttpPost]
+        [HttpDelete]
         public async Task<IActionResult> Delete(int id)
         {
             var currentUser = await GetCurrentUserAsync();
@@ -230,8 +232,8 @@ namespace Metrict.Controllers
                 if (employeeTask.Status == StatusOfTask.Assigned)
                 {
                     _context.EmployeeTask.Remove(employeeTask);
-                    _context.SaveChanges();
-                    return RedirectToAction("Index");
+                    await _context.SaveChangesAsync();
+                    return Json(new { success = true, message = "Delete Successful" });
                 }
             }
 

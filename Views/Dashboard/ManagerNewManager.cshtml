@@ -14,10 +14,26 @@
 <body>
     <h1>Promote a user to manager</h1>
 
-    <div>
-        <form asp-action="CampaignAddUserToCampaign" method="post">
-            <select class="selectpicker select25p" asp-for="Id" asp-items="@(new SelectList(ViewBag.ListofUsers, "Id", "FullName"))"></select>
-            <input type="submit" value="Promote to Manager" />
+    <div class="border container" style="padding:30px;">
+        <form asp-action="ManagerNewManager" method="post">
+            <div class="form-group row">
+                <div class="col-3">
+                    <label for="applicationUserId">User:</label>
+                </div>
+                <div class="col-9">
+                    <select class="selectpicker select25p" name="applicationUserId" asp-items="@(new SelectList(ViewBag.ListofUsers, "Id", "FullName"))"></select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-3 offset-3">
+                    <button type="submit" class="btn btn-primary form-control">
+                        Promote To Manager
+                    </button>
+                </div>
+                <div class="col-3">
+                    <a href="#" onclick="BackToAccounts()" class="btn btn-danger form-control">Back to my account</a>
+                </div>
+            </div>
         </form>
     </div>
 

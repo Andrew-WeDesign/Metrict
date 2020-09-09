@@ -22,6 +22,14 @@ $("#inviteUsers").click(function () {
     $("#main").load("/Dashboard/AccountInviteUsers");
 });
 
+$("#newManager").click(function () {
+    $("#main").load("/Dashboard/ManagerNewManager");
+});
+
+$("#changeManager").click(function () {
+    $("#main").load("/Dashboard/ManagerReassignEmployeeManager");
+});
+
 function BackToReports() {
     $("#main").load("/Dashboard/Reports");
 };

@@ -24,7 +24,7 @@
     <hr />
     <div class="row">
         <div class="col-md-12">
-            <form asp-controller="EmployeeTasks" asp-action="Upsert" method="post">
+            <form asp-controller="Dashboard" asp-action="TaskUpsert" method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="ManagerId" value="@ViewBag.UserId" />
                 <input type="hidden" asp-for="ManagerReply" value="false" />
@@ -64,14 +64,6 @@
     <div>
         <a href="#" onclick="TasksMain()" class="btn btn-primary btn-lg">Back to List</a>
     </div>
-    @*<script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/chosen.jquery.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>*@
 
 </body>
 </html>
