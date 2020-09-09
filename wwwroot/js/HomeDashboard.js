@@ -6,6 +6,10 @@ $("#myCampaigns").click(function () {
     $("#main").load("/Dashboard/Campaigns");
 });
 
+$("#myTasks").click(function () {
+    $("#main").load("/Dashboard/Tasks");
+});
+
 $("#addUserToCampaign").click(function () {
     $("#main").load("/Dashboard/CampaignAddUserToCampaign");
 });
@@ -36,6 +40,18 @@ function StartNewCampaign() {
 
 function BackToAccounts() {
     $("#main").load("/Dashboard/Accounts")
+};
+
+function TasksMain() {
+    $("#main").load("/Dashboard/Tasks")
+}
+
+function TasksNewTask() {
+    $("#main").load("/Dashboard/TaskCreate")
+};
+
+function TasksCalendarView() {
+    $("#main").load("/Dashboard/TaskCalendar")
 };
 
 function Details(url) {

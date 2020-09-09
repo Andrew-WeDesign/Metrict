@@ -36,6 +36,9 @@ namespace Metrict.Controllers
         [BindProperty]
         public Report Report { get; set; }
 
+        [BindProperty]
+        public EmployeeTask EmployeeTask { get; set; }
+
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
         public IActionResult Index()
@@ -802,6 +805,182 @@ namespace Metrict.Controllers
         }
 
 
+
+
+        public IActionResult Tasks()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> TaskCreate()
+        {
+            EmployeeTask = new EmployeeTask();
+
+            var currentUser = await GetCurrentUserAsync();
+            ViewBag.UserId = currentUser.Id;
+
+            List<ApplicationUser> applicationUserList = new List<ApplicationUser>();
+            applicationUserList = (from product in _context.ApplicationUsers.Where(x => x.CompanyId == currentUser.CompanyId) select product).ToList();
+            ViewBag.ListofUsers = applicationUserList;
+
+            return View(EmployeeTask);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> TaskEdit(int? id)
+        {
+
+            var employeeTask = await _context.EmployeeTask.FirstOrDefaultAsync(y => y.Id == id);
+            var currentUser = await GetCurrentUserAsync();
+
+            if (employeeTask.ApplicationUserId == currentUser.Id || employeeTask.ManagerId == currentUser.Id)
+            {
+                EmployeeTask = new EmployeeTask();
+                return View(employeeTask);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> TaskUpsert(EmployeeTask employeeTask)
+        {
+            var currentUser = await GetCurrentUserAsync();
+            if (currentUser.UserActive == false)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                if (employeeTask.Id == 0)
+                {
+                    var empUser = await _context.ApplicationUsers.FirstOrDefaultAsync(x => x.Id == employeeTask.ApplicationUserId);
+
+                    employeeTask.ManagerFullName = currentUser.FullName;
+                    employeeTask.ManagerUserName = currentUser.UserName;
+                    employeeTask.ApplicationUserFullName = empUser.FullName;
+                    employeeTask.ApplicationUserName = empUser.UserName;
+                    employeeTask.Comments = employeeTask.ManagerUserName + "<br />" + DateTime.Now + "<br />" + employeeTask.Comments + "<br />" + "<br />";
+                    employeeTask.Status = StatusOfTask.Assigned;
+                    employeeTask.CompanyId = currentUser.CompanyId;
+                    employeeTask.AssignedDate = DateTime.Now;
+                    _context.EmployeeTask.Add(employeeTask);
+                    _context.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    var empTask = await _context.EmployeeTask.FirstAsync(x => x.Id == employeeTask.Id);
+
+                    empTask.TaskDescription = employeeTask.TaskDescription;
+                    empTask.Severity = employeeTask.Severity;
+                    empTask.DueDate = employeeTask.DueDate;
+                    _context.EmployeeTask.Update(empTask);
+                    _context.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> TaskDelete(int id)
+        {
+            var currentUser = await GetCurrentUserAsync();
+            var employeeTask = await _context.EmployeeTask.FirstAsync(x => x.Id == id);
+
+            if (employeeTask.ManagerId == currentUser.Id)
+            {
+                if (employeeTask.Status == StatusOfTask.Assigned)
+                {
+                    _context.EmployeeTask.Remove(employeeTask);
+                    _context.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+            }
+
+            return NotFound();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> TaskDetails(int? id)
+        {
+            if (id == 0)
+            {
+                return NotFound();
+            }
+
+            var currentUser = await GetCurrentUserAsync();
+            var employeeTask = await _context.EmployeeTask.FirstAsync(x => x.Id == id);
+
+            if (employeeTask.ApplicationUserId == currentUser.Id || employeeTask.ManagerId == currentUser.Id)
+            {
+                employeeTask.Comments = employeeTask.Comments.Replace("<br />", "\r\n");
+                return View(employeeTask);
+            }
+            else
+            {
+                return NotFound();
+            }
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> TaskNewComment(int taskId, string newComment)
+        {
+            if (taskId == 0 || newComment == null)
+            {
+                return NotFound();
+            }
+
+            var currentUser = await GetCurrentUserAsync();
+            var employeeTask = await _context.EmployeeTask.FirstAsync(x => x.Id == taskId);
+
+            if (employeeTask.ApplicationUserId == currentUser.Id)
+            {
+                if (ModelState.IsValid)
+                {
+                    employeeTask.Comments = employeeTask.Comments + DateTime.Now + "<br />" + employeeTask.ApplicationUserFullName + "<br />" + newComment + "<br />" + "<br />";
+                    if (employeeTask.Status == StatusOfTask.Assigned)
+                    {
+                        employeeTask.Status = StatusOfTask.WorkInProgress;
+                    }
+                    employeeTask.ManagerReply = true;
+                    employeeTask.EmployeeReply = false;
+                    _context.EmployeeTask.Update(employeeTask);
+                    _context.SaveChanges();
+                    return RedirectToAction("Index");
+
+                }
+            }
+            else if (employeeTask.ManagerId == currentUser.Id)
+            {
+                if (ModelState.IsValid)
+                {
+                    employeeTask.Comments = employeeTask.Comments + DateTime.Now + "<br />" + employeeTask.ManagerFullName + "<br />" + newComment + "<br />" + "<br />";
+                    employeeTask.ManagerReply = false;
+                    employeeTask.EmployeeReply = true;
+                    _context.EmployeeTask.Update(employeeTask);
+                    _context.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+            }
+            else
+            {
+                return NotFound();
+            }
+            return View();
+        }
+
+        public IActionResult TaskCalendar()
+        {
+            return View();
+        }
 
 
 

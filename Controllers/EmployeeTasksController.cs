@@ -39,6 +39,8 @@ namespace Metrict.Controllers
             public DateTime StartDate { get; set; }
             public DateTime EndDate { get; set; }
             public string Location { get; set; }
+            public string BackgroundColor { get; set; }
+            public string BorderColor { get; set; }
         }
 
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
@@ -163,6 +165,8 @@ namespace Metrict.Controllers
                 description = e.Comments.Replace("<br />", "\r\n"),
                 start = e.DueDate.ToString("MM/dd/yyyy"),
                 end = e.DueDate.ToString("MM/dd/yyyy"),
+                backgroundColor = FullCalBgColor(e.Status),
+                borderColor = FullCalBorderColor(e.ManagerId, currentUser.Id)
             }).ToListAsync();
 
             return new JsonResult(calEvent);
@@ -273,7 +277,6 @@ namespace Metrict.Controllers
             }
         }
 
-
         [HttpPost]
         public async Task<IActionResult> TaskStatusToCompleted(int id)
         {
@@ -290,7 +293,6 @@ namespace Metrict.Controllers
             return RedirectToAction("Details", new { id });
         }
 
-
         [HttpGet]
         public async Task<IActionResult> GetAllMyTasks()
         {
@@ -300,5 +302,43 @@ namespace Metrict.Controllers
 
         }
     
+        
+        public static string FullCalBorderColor(string managerId, string currentUserId)
+        {
+            if (managerId == currentUserId)
+            {
+                string color = "#ffffff";
+                return color;
+            }
+            else
+            {
+                string color = "#000000";
+                return color;
+            }
+        }
+
+        public static string FullCalBgColor(StatusOfTask status)
+        {
+            if (status == StatusOfTask.Assigned)
+            {
+                string color = "#1122d6";
+                return color;
+            }
+            else if (status == StatusOfTask.WorkInProgress)
+            {
+                string color = "#cad415";
+                return color;
+            }
+            else if (status == StatusOfTask.Review)
+            {
+                string color = "#00ad17";
+                return color;
+            }
+            else //(status == StatusOfTask.Completed)
+            {
+                string color = "#969696";
+                return color;
+            }
+        }
     }
 }

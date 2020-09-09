@@ -1,0 +1,65 @@
+﻿@model Metrict.Models.EmployeeTask
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tasks</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
+    <link href="~/css/chosen.min.css" rel="stylesheet" />
+    <link href="~/css/dashboard.css" rel="stylesheet" />
+
+</head>
+<body>
+    <h1>Edit a Task</h1>
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-controller="EmployeeTasks" asp-action="Upsert" method="post">
+                <input type="hidden" asp-for="Id" />
+                <div class="form-group">
+                    <label asp-for="TaskDescription" class="control-label"></label>
+                    <input asp-for="TaskDescription" class="form-control" />
+                    <span asp-validation-for="TaskDescription" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Severity" class="control-label"></label>
+                    <select asp-for="Severity" class="form-control"></select>
+                    <span asp-validation-for="Severity" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="DueDate" class="control-label"></label>
+                    <input type="date" asp-for="DueDate" class="form-control" />
+                    <span asp-validation-for="DueDate" class="text-danger"></span>
+                </div>
+                <div class="form-group row">
+                    <div class="col-6">
+                        <button type="submit" class="btn btn-primary form-control">Edit</button>
+                    </div>
+                    <div class="col-6">
+                        <a href="#" onclick="TasksMain()" class="btn btn-primary btn-lg">Cancel</a>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+    @*<script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/chosen.jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>*@
+
+</body>
+</html>

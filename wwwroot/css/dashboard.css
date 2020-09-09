@@ -102,3 +102,8 @@
         max-width: 1140px;
     }
 }
+
+/* makes calender page comments good*/
+.modal-body {
+    white-space: pre-wrap;
+}

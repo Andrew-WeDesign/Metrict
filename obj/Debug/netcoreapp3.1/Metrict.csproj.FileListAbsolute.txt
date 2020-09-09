@@ -302,3 +302,8 @@ E:\Repos\Metrict\Metrict\obj\Debug\netcoreapp3.1\Razor\Views\EmployeeTasks\Creat
 E:\Repos\Metrict\Metrict\obj\Debug\netcoreapp3.1\Razor\Views\EmployeeTasks\Details.cshtml.g.cs
 E:\Repos\Metrict\Metrict\obj\Debug\netcoreapp3.1\Razor\Views\EmployeeTasks\Edit.cshtml.g.cs
 E:\Repos\Metrict\Metrict\obj\Debug\netcoreapp3.1\Razor\Views\EmployeeTasks\Calendar.cshtml.g.cs
+E:\Repos\Metrict\Metrict\obj\Debug\netcoreapp3.1\Razor\Views\Dashboard\Tasks.cshtml.g.cs
+E:\Repos\Metrict\Metrict\obj\Debug\netcoreapp3.1\Razor\Views\Dashboard\TaskEdit.cshtml.g.cs
+E:\Repos\Metrict\Metrict\obj\Debug\netcoreapp3.1\Razor\Views\Dashboard\TaskCreate.cshtml.g.cs
+E:\Repos\Metrict\Metrict\obj\Debug\netcoreapp3.1\Razor\Views\Dashboard\TaskDetails.cshtml.g.cs
+E:\Repos\Metrict\Metrict\obj\Debug\netcoreapp3.1\Razor\Views\Dashboard\TaskCalendar.cshtml.g.cs
