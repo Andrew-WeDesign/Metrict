@@ -12,6 +12,7 @@
             $('#fullCalModal').modal();
             return false;
         },
+        timezone: 'local',
         events: 'https://localhost:44322/employeetasks/getallforcalendar'
     });
 });

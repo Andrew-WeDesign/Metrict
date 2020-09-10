@@ -10,6 +10,18 @@ $("#myTasks").click(function () {
     $("#main").load("/Dashboard/Tasks");
 });
 
+$("#myReportsSmall").click(function () {
+    $("#main").load("/Dashboard/Reports");
+});
+
+$("#myCampaignsSmall").click(function () {
+    $("#main").load("/Dashboard/Campaigns");
+});
+
+$("#myTasksSmall").click(function () {
+    $("#main").load("/Dashboard/Tasks");
+});
+
 $("#addUserToCampaign").click(function () {
     $("#main").load("/Dashboard/CampaignAddUserToCampaign");
 });

@@ -51,7 +51,7 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="DueDate" class="control-label"></label>
-                    <input type="date" asp-for="DueDate" class="form-control" value="@DateTime.Now" />
+                    <input type="datetime-local" asp-for="DueDate" class="form-control" value="@DateTime.Now" />
                     <span asp-validation-for="DueDate" class="text-danger"></span>
                 </div>
                 <div class="form-group">

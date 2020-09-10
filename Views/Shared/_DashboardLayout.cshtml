@@ -25,25 +25,29 @@
         </a>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                </li>
                 <li class="nav-item">
+                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" asp-area="" asp-controller="Dashboard" asp-action="Index">Dashboard<span class="sr-only">(current)</span></a>
+                </li>
+                @*<li class="nav-item">
                     <a class="nav-link" href="#">Features</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Pricing</a>
-                </li>
+                </li>*@
                 <partial name="_DashboardLoginPartial" />
                 <li class="nav-item dropdown d-sm-block d-md-none">
                     <a class="nav-link dropdown-toggle" href="#" id="smallerscreenmenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Menu
                     </a>
                     <div class="dropdown-menu" aria-labelledby="smallerscreenmenu">
-                        <a class="dropdown-item" href="#">Dashboard</a>
-                        <a class="dropdown-item" href="#">Profile</a>
-                        <a class="dropdown-item" href="#">Tasks</a>
-                        <a class="dropdown-item" href="#">Etc ...</a>
+                        <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        <a class="dropdown-item" asp-area="" asp-controller="Dashboard" asp-action="Index">Dashboard</a>
+                        <a class="dropdown-item" href="#" id="myCampaignsSmall">Campaigns</a>
+                        <a class="dropdown-item" href="#" id="myReportsSmall">Reports</a>
+                        <a class="dropdown-item" href="#" id="myTasksSmall">Tasks</a>
                     </div>
                 </li>
             </ul>
@@ -65,14 +69,19 @@
                     </a>
                 </li>
                 <li id="submenu1" class="collapse sidebar-submenu">
-                    <a href="#" id="myReports" class="list-group-item list-group-item-action bg-dark text-white">
-                        <span class="menu-collapsed">Reports</span>
-                    </a>
                     <a href="#" id="myCampaigns" class="list-group-item list-group-item-action bg-dark text-white">
                         <span class="menu-collapsed">Campaigns</span>
                     </a>
-                    <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
-                        <span class="menu-collapsed">Tasks</span>
+                    <a href="#" id="myReports" class="list-group-item list-group-item-action bg-dark text-white">
+                        <span class="menu-collapsed">Reports</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" id="myTasks" class="bg-dark list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-start align-items-center">
+                            <span class="fa fa-tasks fa-fw mr-3"></span>
+                            <span class="menu-collapsed">Tasks</span>
+                        </div>
                     </a>
                 </li>
                 <li>
@@ -101,16 +110,8 @@
                         <span class="menu-collapsed">Reassign employees/managers</span>
                     </a>
                 </li>
-                <li>
-                    <a href="#" id="myTasks" class="bg-dark list-group-item list-group-item-action">
-                        <div class="d-flex w-100 justify-content-start align-items-center">
-                            <span class="fa fa-tasks fa-fw mr-3"></span>
-                            <span class="menu-collapsed">Tasks</span>
-                        </div>
-                    </a>
-                </li>
                 <li class="list-group-item sidebar-separator-title text-muted d-flex align-items-center menu-collapsed">
-                    <small>OPTIONS</small>
+                    <small>SOCIAL MENU</small>
                 </li>
                 <li>
                     <a href="#" onclick="TasksCalendarView()" class="bg-dark list-group-item list-group-item-action">

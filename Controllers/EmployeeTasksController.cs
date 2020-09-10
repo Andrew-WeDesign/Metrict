@@ -164,11 +164,11 @@ namespace Metrict.Controllers
                 id = e.Id,
                 title = e.TaskDescription,
                 description = e.Comments.Replace("<br />", "\r\n"),
-                start = e.DueDate.ToString("MM/dd/yyyy"),
-                end = e.DueDate.ToString("MM/dd/yyyy"),
+                start = e.DueDate.ToString("MM/dd/yyyy HH:mm"),
+                end = e.DueDate.ToString("MM/dd/yyyy HH:mm"),
                 url = "https://localhost:44322/EmployeeTasks/Details?id=" + e.Id.ToString(),
                 backgroundColor = FullCalBgColor(e.Status),
-                borderColor = FullCalBorderColor(e.ManagerId, currentUser.Id)
+                borderColor = FullCalBorderColor(e.ManagerId, e.ApplicationUserId, currentUser.Id)
             }).ToListAsync();
 
             return new JsonResult(calEvent);
@@ -305,13 +305,19 @@ namespace Metrict.Controllers
         }
     
         
-        public static string FullCalBorderColor(string managerId, string currentUserId)
+        public static string FullCalBorderColor(string managerId, string applicationUserId, string currentUserId)
         {
-            if (managerId == currentUserId)
+            if (applicationUserId == currentUserId && managerId == currentUserId)
+            {
+                string color = "#000000";
+                return color;
+            }
+            else if (managerId == currentUserId)
             {
                 string color = "#ffffff";
                 return color;
             }
+
             else
             {
                 string color = "#000000";
