@@ -15,7 +15,7 @@
     <h1>Reassign Employee Manager</h1>
 
     <div class="border container" style="padding:30px;">
-        <form asp-action="ManagerReassignEmployeeManager" method="post">
+        <form asp-action="ManagerReassignEmployeeManager" method="post" id="noRedirectReassignEmployeeManager">
             <div class="form-group row">
                 <div class="col-3">
                     <p>Employee:</p>
@@ -39,7 +39,7 @@
                     </button>
                 </div>
                 <div class="col-3">
-                    <a href="#" onclick="BackToAccounts()" class="btn btn-danger form-control">Back to my account</a>
+                    <a href="#" class="btn btn-danger form-control" id="reassignEmployeeManagerAndBackToAccounts">Back to my account</a>
                 </div>
             </div>
         </form>
@@ -48,6 +48,30 @@
     <script>
         $(function () {
             $(".selectpicker").chosen();
+        });
+    </script>
+
+    <script>
+        $(function () {
+            var frm = $('#noRedirectReassignEmployeeManager')
+            frm.submit(function (e) {
+                e.preventDefault();
+                $.ajax({
+                    type: frm.attr('method'),
+                    url: frm.attr('action'),
+                    data: frm.serialize(),
+                    success: function (data) {
+                        toastr.success("success");
+                    }
+                });
+
+            });
+            $('#reassignEmployeeManagerAndBackToAccounts').click(function () {
+                function showMain() {
+                    $("#main").load("/Dashboard/Accounts");
+                }
+                setTimeout(showMain, 1000)
+            });
         });
     </script>
 

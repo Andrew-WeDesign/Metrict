@@ -15,7 +15,7 @@
     <h1>Promote a user to manager</h1>
 
     <div class="border container" style="padding:30px;">
-        <form asp-action="ManagerNewManager" method="post">
+        <form asp-action="ManagerNewManager" method="post" id="noRedirectNewManager">
             <div class="form-group row">
                 <div class="col-3">
                     <label for="applicationUserId">User:</label>
@@ -31,7 +31,7 @@
                     </button>
                 </div>
                 <div class="col-3">
-                    <a href="#" onclick="BackToAccounts()" class="btn btn-danger form-control">Back to my account</a>
+                    <a href="#" class="btn btn-danger form-control" id="newManagerAndBackToAccounts">Back to my account</a>
                 </div>
             </div>
         </form>
@@ -40,6 +40,30 @@
     <script>
         $(function () {
             $(".selectpicker").chosen();
+        });
+    </script>
+
+    <script>
+        $(function () {
+            var frm = $('#noRedirectNewManager')
+            frm.submit(function (e) {
+                e.preventDefault();
+                $.ajax({
+                    type: frm.attr('method'),
+                    url: frm.attr('action'),
+                    data: frm.serialize(),
+                    success: function (data) {
+                        toastr.success("success");
+                    }
+                });
+
+            });
+            $('#newManagerAndBackToAccounts').click(function () {
+                function showMain() {
+                    $("#main").load("/Dashboard/Accounts");
+                }
+                setTimeout(showMain, 1000)
+            });
         });
     </script>
 

@@ -12,5 +12,53 @@
 </head>
 <body>
     <h1>Accounts</h1>
+    <p>This is a placeholder page during beta testing.</p>
+    <p>Here are some links you might be looking for.</p>
+    <a href="#" id="changeCompanyAccIndex" class="btn btn-primary form-control">
+        Change your company
+    </a>
+    <a href="#" id="addUserToCampaignAccIndex" class="btn btn-primary form-control">
+        Add a user to a campaign
+    </a>
+    <a href="#" id="inviteUsersAccIndex" class="btn btn-primary form-control">
+        Email invitation
+    </a>
+    <a href="#" id="newManagerAccIndex" class="btn btn-primary form-control">
+        New Managers
+    </a>
+    <a href="#" id="changeManagerAccIndex" class="btn btn-primary form-control">
+        Reassign employees/managers
+    </a>
+
+    <script>
+        $("#changeCompanyAccIndex").click(function () {
+            $("#main").load("/Dashboard/AccountChangeCompany");
+        });
+    </script>
+
+    <script>
+        $("#addUserToCampaignAccIndex").click(function () {
+            $("#main").load("/Dashboard/CampaignAddUserToCampaign");
+        });
+    </script>
+
+    <script>
+        $("#inviteUsersAccIndex").click(function () {
+            $("#main").load("/Dashboard/AccountInviteUsers");
+        });
+    </script>
+
+    <script>
+        $("#newManagerAccIndex").click(function () {
+            $("#main").load("/Dashboard/ManagerNewManager");
+        });
+    </script>
+
+    <script>
+        $("#changeManagerAccIndex").click(function () {
+            $("#main").load("/Dashboard/ManagerReassignEmployeeManager");
+        });
+    </script>
+
 </body>
 </html>

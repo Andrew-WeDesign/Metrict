@@ -16,7 +16,7 @@
     <h1>Edit</h1>
 
     <div class="border container" style="padding:30px;">
-        <form asp-controller="Dashboard" asp-action="ReportUpsert" method="post">
+        <form asp-controller="Dashboard" asp-action="ReportUpsert" method="post" id="noRedirectReportEdit">
             <input type="hidden" asp-for="@Model.Reports.Id" />
             <input type="hidden" asp-for="@Model.Reports.SubmissionDate" />
             <input type="hidden" asp-for="@Model.Reports.CampaignId" value="@Model.Campaigns.Id" />
@@ -263,7 +263,7 @@
             }
             <div class="form-group row">
                 <div class="col-3 offset-3">
-                    <button type="submit" class="btn btn-primary form-control">Edit</button>
+                    <button type="submit" class="btn btn-primary form-control" id="reportEditAndBackToList">Edit</button>
                 </div>
                 <div class="col-3">
                     <a href="#" onclick="BackToReports()" class="btn btn-danger form-control">Cancel</a>
@@ -272,6 +272,30 @@
 
         </form>
     </div>
+
+    <script>
+        $(function () {
+            var frm = $('#noRedirectReportEdit')
+            frm.submit(function (e) {
+                e.preventDefault();
+                $.ajax({
+                    type: frm.attr('method'),
+                    url: frm.attr('action'),
+                    data: frm.serialize(),
+                    success: function (data) {
+                        toastr.success("success");
+                    }
+                });
+
+            });
+            $('#reportEditAndBackToList').click(function () {
+                function showMain() {
+                    $("#main").load("/Dashboard/Reports");
+                }
+                setTimeout(showMain, 1000)
+            });
+        });
+    </script>
 
 </body>
 </html>

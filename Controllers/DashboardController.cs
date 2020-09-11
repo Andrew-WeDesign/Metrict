@@ -46,6 +46,9 @@ namespace Metrict.Controllers
             return View();
         }
 
+
+
+
         public async Task<IActionResult> Reports()
         {
             var currentUser = await GetCurrentUserAsync();
@@ -120,67 +123,59 @@ namespace Metrict.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ReportUpsert(CampaignReportData campaignReportData)
+        public async Task ReportUpsert(CampaignReportData campaignReportData)
         {
             var currentUser = await GetCurrentUserAsync();
-            if (currentUser.UserActive == false)
+            if (currentUser.UserActive == true)
             {
-                return NotFound();
-            }
-
-            var campaign = await _context.Campaigns.FirstOrDefaultAsync(x => x.Id == campaignReportData.Reports.CampaignId);
-            if (ModelState.IsValid)
-            {
-                if (campaignReportData.Reports.Id == 0)
+                var campaign = await _context.Campaigns.FirstOrDefaultAsync(x => x.Id == campaignReportData.Reports.CampaignId);
+                if (ModelState.IsValid)
                 {
-                    campaignReportData.Reports.ManagerId = campaign.ManagerId;
-                    campaignReportData.Reports.SubmissionDate = DateTime.Now;
-                    campaignReportData.Reports.ApplicationUserId = currentUser.Id;
-                    campaignReportData.Reports.ApplicationUserName = currentUser.FullName;
-                    //campaignReportData.Reports.CampaignId = campaignReportData.Reports.CampaignId;
-                    campaignReportData.Reports.CampaignName = campaign.Name;
-                    campaignReportData.Reports.CompanyId = currentUser.CompanyId;
-                    campaignReportData.Reports.IsActive = true;
-                    _context.Reports.Add(campaignReportData.Reports);
-                }
-                else
-                {
-                    var report = await _context.Reports.FirstOrDefaultAsync(x => x.Id == campaignReportData.Reports.Id);
-                    if (!CorrectAppUser(currentUser.Id, campaignReportData.Reports.Id))
+                    if (campaignReportData.Reports.Id == 0)
                     {
-                        return NotFound();
+                        campaignReportData.Reports.ManagerId = campaign.ManagerId;
+                        campaignReportData.Reports.SubmissionDate = DateTime.Now;
+                        campaignReportData.Reports.ApplicationUserId = currentUser.Id;
+                        campaignReportData.Reports.ApplicationUserName = currentUser.FullName;
+                        //campaignReportData.Reports.CampaignId = campaignReportData.Reports.CampaignId;
+                        campaignReportData.Reports.CampaignName = campaign.Name;
+                        campaignReportData.Reports.CompanyId = currentUser.CompanyId;
+                        campaignReportData.Reports.IsActive = true;
+                        _context.Reports.Add(campaignReportData.Reports);
                     }
                     else
                     {
-                        report.LastEditDate = DateTime.Now;
-                        report.DataColumnNumber1 = campaignReportData.Reports.DataColumnNumber1;
-                        report.DataColumnNumber2 = campaignReportData.Reports.DataColumnNumber2;
-                        report.DataColumnNumber3 = campaignReportData.Reports.DataColumnNumber3;
-                        report.DataColumnNumber4 = campaignReportData.Reports.DataColumnNumber4;
-                        report.DataColumnNumber5 = campaignReportData.Reports.DataColumnNumber5;
-                        report.DataColumnNumber6 = campaignReportData.Reports.DataColumnNumber6;
-                        report.DataColumnNumber7 = campaignReportData.Reports.DataColumnNumber7;
-                        report.DataColumnNumber8 = campaignReportData.Reports.DataColumnNumber8;
-                        report.DataColumnNumber9 = campaignReportData.Reports.DataColumnNumber9;
-                        report.DataColumnNumber10 = campaignReportData.Reports.DataColumnNumber10;
-                        report.DataColumnTextA = campaignReportData.Reports.DataColumnTextA;
-                        report.DataColumnTextB = campaignReportData.Reports.DataColumnTextB;
-                        report.DataColumnTextC = campaignReportData.Reports.DataColumnTextC;
-                        report.DataColumnTextD = campaignReportData.Reports.DataColumnTextD;
-                        report.DataColumnTextE = campaignReportData.Reports.DataColumnTextE;
-                        report.DataColumnTextF = campaignReportData.Reports.DataColumnTextF;
-                        report.DataColumnTextG = campaignReportData.Reports.DataColumnTextG;
-                        report.DataColumnTextH = campaignReportData.Reports.DataColumnTextH;
-                        report.DataColumnTextI = campaignReportData.Reports.DataColumnTextI;
-                        report.DataColumnTextJ = campaignReportData.Reports.DataColumnTextJ;
-                        report.CompanyId = currentUser.CompanyId;
-                        _context.Reports.Update(report);
+                        var report = await _context.Reports.FirstOrDefaultAsync(x => x.Id == campaignReportData.Reports.Id);
+                        if (CorrectAppUser(currentUser.Id, campaignReportData.Reports.Id))
+                        {
+                            report.LastEditDate = DateTime.Now;
+                            report.DataColumnNumber1 = campaignReportData.Reports.DataColumnNumber1;
+                            report.DataColumnNumber2 = campaignReportData.Reports.DataColumnNumber2;
+                            report.DataColumnNumber3 = campaignReportData.Reports.DataColumnNumber3;
+                            report.DataColumnNumber4 = campaignReportData.Reports.DataColumnNumber4;
+                            report.DataColumnNumber5 = campaignReportData.Reports.DataColumnNumber5;
+                            report.DataColumnNumber6 = campaignReportData.Reports.DataColumnNumber6;
+                            report.DataColumnNumber7 = campaignReportData.Reports.DataColumnNumber7;
+                            report.DataColumnNumber8 = campaignReportData.Reports.DataColumnNumber8;
+                            report.DataColumnNumber9 = campaignReportData.Reports.DataColumnNumber9;
+                            report.DataColumnNumber10 = campaignReportData.Reports.DataColumnNumber10;
+                            report.DataColumnTextA = campaignReportData.Reports.DataColumnTextA;
+                            report.DataColumnTextB = campaignReportData.Reports.DataColumnTextB;
+                            report.DataColumnTextC = campaignReportData.Reports.DataColumnTextC;
+                            report.DataColumnTextD = campaignReportData.Reports.DataColumnTextD;
+                            report.DataColumnTextE = campaignReportData.Reports.DataColumnTextE;
+                            report.DataColumnTextF = campaignReportData.Reports.DataColumnTextF;
+                            report.DataColumnTextG = campaignReportData.Reports.DataColumnTextG;
+                            report.DataColumnTextH = campaignReportData.Reports.DataColumnTextH;
+                            report.DataColumnTextI = campaignReportData.Reports.DataColumnTextI;
+                            report.DataColumnTextJ = campaignReportData.Reports.DataColumnTextJ;
+                            report.CompanyId = currentUser.CompanyId;
+                            _context.Reports.Update(report);
+                        }
                     }
+                    _context.SaveChanges();
                 }
-                _context.SaveChanges();
-                return RedirectToAction("Index");
             }
-            return View(Report);
         }
 
 
@@ -301,74 +296,63 @@ namespace Metrict.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CampaignUpsert()
+        public async Task CampaignUpsert()
         {
             var currentUser = await GetCurrentUserAsync();
             //ViewBag.UserId = currentUser.Id;
-            if (currentUser.UserActive == false)
+            if (currentUser.UserActive == true)
             {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                if (Campaign.Id == 0)
+                if (ModelState.IsValid)
                 {
-                    Campaign.ManagerId = currentUser.Id;
-                    Campaign.StartDate = DateTime.Now;
-                    Campaign.CampaignActive = true;
-                    Campaign.CompanyId = currentUser.CompanyId;
-                    _context.Campaigns.Add(Campaign);
-                    //_context.SaveChanges();
-                    if (currentUser.UserRole == "NewUser")
+                    if (Campaign.Id == 0)
                     {
-                        var applicationUser = await _context.ApplicationUsers.FindAsync(currentUser.Id);
-                        if (!ManagerExists("Manager", currentUser.CompanyId))
+                        Campaign.ManagerId = currentUser.Id;
+                        Campaign.StartDate = DateTime.Now;
+                        Campaign.CampaignActive = true;
+                        Campaign.CompanyId = currentUser.CompanyId;
+                        _context.Campaigns.Add(Campaign);
+                        _context.SaveChanges();
+                        if (currentUser.UserRole == "NewUser")
                         {
-                            applicationUser.UserRole = "Manager";
-                            await _userManager.AddToRoleAsync(applicationUser, "Manager");
-                            applicationUser.UserActive = true;
-                            if (ModelState.IsValid)
+                            var applicationUser = await _context.ApplicationUsers.FindAsync(currentUser.Id);
+                            if (!ManagerExists("Manager", currentUser.CompanyId))
                             {
-                                try
+                                applicationUser.UserRole = "Manager";
+                                await _userManager.AddToRoleAsync(applicationUser, "Manager");
+                                applicationUser.UserActive = true;
+                                if (ModelState.IsValid)
                                 {
-                                    _context.Update(applicationUser);
-                                    await _context.SaveChangesAsync();
-                                }
-                                catch (DbUpdateConcurrencyException)
-                                {
-                                    if (!ApplicationUserExists(applicationUser.Id))
+                                    try
                                     {
-                                        return NotFound();
+                                        _context.Update(applicationUser);
+                                        await _context.SaveChangesAsync();
                                     }
-                                    else
+                                    catch (DbUpdateConcurrencyException)
                                     {
-                                        throw;
+                                        if (!ApplicationUserExists(applicationUser.Id))
+                                        {
+                                            
+                                        }
+                                        else
+                                        {
+                                            throw;
+                                        }
                                     }
                                 }
                             }
                         }
                     }
-                }
-                else
-                {
-                    if (Campaign.ManagerId != currentUser.Id)
-                    {
-                        return NotFound();
-                    }
-                    else
+                    else if (Campaign.ManagerId == currentUser.Id)
                     {
                         Campaign.ManagerId = currentUser.Id;
                         Campaign.CampaignActive = true;
                         Campaign.CompanyId = currentUser.CompanyId;
                         _context.Campaigns.Update(Campaign);
-                        //_context.SaveChanges();
+                        _context.SaveChanges();
                     }
+                    _context.SaveChanges();
                 }
-                _context.SaveChanges();
-                return RedirectToAction("Index");
             }
-            return View(Campaign);
         }
 
         public async Task<IActionResult> CampaignManageCampaignUser(int? id)
@@ -438,64 +422,152 @@ namespace Metrict.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CampaignNewCampaignUser(int CampaignId, string ApplicationUserId)
+        public async Task CampaignNewCampaignUser(int CampaignId, string ApplicationUserId)
         {
             var campaign = await _context.Campaigns.FirstOrDefaultAsync(x => x.Id == CampaignId);
             var applicationUser = await _context.ApplicationUsers.FirstOrDefaultAsync(x => x.Id == ApplicationUserId);
 
             var currentUser = await GetCurrentUserAsync();
-            if (campaign.ManagerId != currentUser.Id)
+            if (campaign.ManagerId == currentUser.Id)
             {
-                return NotFound();
-            }
-
-            if (applicationUser.UserActive != true)
-            {
-                applicationUser.UserActive = true;
-                _context.ApplicationUsers.Update(applicationUser);
-                await _context.SaveChangesAsync();
-            }
-
-            CampaignUser campaignUser = new CampaignUser
-            {
-                Id = applicationUser.Id + campaign.Id,
-                CampaignId = campaign.Id,
-                CampaignName = campaign.Name,
-                ApplicationUserId = applicationUser.Id,
-                ApplicationUserFullName = applicationUser.FullName
-            };
-
-            if (!CampaignUserExists(campaignUser.Id))
-            {
-                _context.Add(campaignUser);
-                await _context.SaveChangesAsync();
-                if (applicationUser.UserRole == "NewUser")
+                if (applicationUser.UserActive != true)
                 {
-                    applicationUser.UserRole = "Employee";
-                    await _userManager.AddToRoleAsync(applicationUser, "Employee");
-                    applicationUser.ManagerID = currentUser.Id;
-                    if (ModelState.IsValid)
+                    applicationUser.UserActive = true;
+                    _context.ApplicationUsers.Update(applicationUser);
+                    await _context.SaveChangesAsync();
+                }
+
+                CampaignUser campaignUser = new CampaignUser
+                {
+                    Id = applicationUser.Id + campaign.Id,
+                    CampaignId = campaign.Id,
+                    CampaignName = campaign.Name,
+                    ApplicationUserId = applicationUser.Id,
+                    ApplicationUserFullName = applicationUser.FullName
+                };
+
+                if (!CampaignUserExists(campaignUser.Id))
+                {
+                    _context.Add(campaignUser);
+                    await _context.SaveChangesAsync();
+                    if (applicationUser.UserRole == "NewUser")
                     {
-                        try
+                        applicationUser.UserRole = "Employee";
+                        await _userManager.AddToRoleAsync(applicationUser, "Employee");
+                        applicationUser.ManagerID = currentUser.Id;
+                        if (ModelState.IsValid)
                         {
-                            _context.Update(applicationUser);
-                            await _context.SaveChangesAsync();
-                        }
-                        catch (DbUpdateConcurrencyException)
-                        {
-                            if (!ApplicationUserExists(applicationUser.Id))
+                            try
                             {
-                                return NotFound();
+                                _context.Update(applicationUser);
+                                await _context.SaveChangesAsync();
                             }
-                            else
+                            catch (DbUpdateConcurrencyException)
                             {
-                                throw;
+                                if (!ApplicationUserExists(applicationUser.Id))
+                                {
+                                    
+                                }
+                                else
+                                {
+                                    throw;
+                                }
                             }
                         }
                     }
                 }
             }
-            return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> CampaignActivateUser(int campaignId, string applicationUserId)
+        {
+            var activeCampaign = await _context.Campaigns.FirstOrDefaultAsync(x => x.Id == campaignId);
+            var activeApplicationUser = await _context.ApplicationUsers.FirstOrDefaultAsync(x => x.Id == applicationUserId);
+            int tempId = activeCampaign.Id;
+
+            var currentUser = await GetCurrentUserAsync();
+            if (activeCampaign.ManagerId != currentUser.Id)
+            {
+                return NotFound();
+            }
+
+            activeApplicationUser.UserActive = true;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(activeApplicationUser);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ApplicationUserExists(activeApplicationUser.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
+            return RedirectToAction("ManageCampaignUser", new { id = tempId });
+        }
+
+        public async Task<IActionResult> CampaignDeactivateUser(int campaignId, string applicationUserId)
+        {
+            var activeCampaign = await _context.Campaigns.FirstOrDefaultAsync(x => x.Id == campaignId);
+            var activeApplicationUser = await _context.ApplicationUsers.FirstOrDefaultAsync(x => x.Id == applicationUserId);
+            int tempId = activeCampaign.Id;
+
+            var currentUser = await GetCurrentUserAsync();
+            if (activeCampaign.ManagerId != currentUser.Id)
+            {
+                return NotFound();
+            }
+
+            activeApplicationUser.UserActive = false;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(activeApplicationUser);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ApplicationUserExists(activeApplicationUser.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
+            return RedirectToAction("ManageCampaignUser", new { id = tempId });
+        }
+
+        public async Task<IActionResult> CampaignRemoveUser(int campaignId, string applicationUserId)
+        {
+            var activeCampaign = await _context.Campaigns.FirstOrDefaultAsync(x => x.Id == campaignId);
+            var activeApplicationUser = await _context.ApplicationUsers.FirstOrDefaultAsync(x => x.Id == applicationUserId);
+            int tempId = activeCampaign.Id;
+
+            var currentUser = await GetCurrentUserAsync();
+            if (activeCampaign.ManagerId != currentUser.Id)
+            {
+                return NotFound();
+            }
+
+            string removeId = applicationUserId + campaignId;
+            var removeCampaignUser = await _context.CampaignUsers.FirstOrDefaultAsync(x => x.Id == removeId);
+
+            _context.CampaignUsers.Remove(removeCampaignUser);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("ManageCampaignUser", new { id = tempId });
         }
 
         public async Task<IActionResult> CampaignAddUserToCampaign()
@@ -516,76 +588,71 @@ namespace Metrict.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CampaignAddUserToCampaign(int CampaignId, string ApplicationUserId)
+        public async Task CampaignAddUserToCampaign(int CampaignId, string ApplicationUserId)
         {
             var campaign = await _context.Campaigns.FirstOrDefaultAsync(x => x.Id == CampaignId);
             var applicationUser = await _context.ApplicationUsers.FirstOrDefaultAsync(x => x.Id == ApplicationUserId);
 
             var currentUser = await GetCurrentUserAsync();
-            if (campaign.ManagerId != currentUser.Id)
+            if (campaign.ManagerId == currentUser.Id)
             {
-                return NotFound();
-            }
-
-            if (applicationUser.UserActive != true)
-            {
-                applicationUser.UserActive = true;
-                _context.ApplicationUsers.Update(applicationUser);
-                await _context.SaveChangesAsync();
-            }
-
-            CampaignUser campaignUser = new CampaignUser
-            {
-                Id = applicationUser.Id + campaign.Id,
-                CampaignId = campaign.Id,
-                CampaignName = campaign.Name,
-                ApplicationUserId = applicationUser.Id,
-                ApplicationUserFullName = applicationUser.FullName
-            };
-
-            if (!CampaignUserExists(campaignUser.Id))
-            {
-                _context.Add(campaignUser);
-                await _context.SaveChangesAsync();
-                if (applicationUser.UserRole == "NewUser")
+                if (applicationUser.UserActive != true)
                 {
-                    applicationUser.UserRole = "Employee";
-                    await _userManager.AddToRoleAsync(applicationUser, "Employee");
-                    applicationUser.ManagerID = currentUser.Id;
-                    if (ModelState.IsValid)
+                    applicationUser.UserActive = true;
+                    _context.ApplicationUsers.Update(applicationUser);
+                    await _context.SaveChangesAsync();
+                }
+
+                CampaignUser campaignUser = new CampaignUser
+                {
+                    Id = applicationUser.Id + campaign.Id,
+                    CampaignId = campaign.Id,
+                    CampaignName = campaign.Name,
+                    ApplicationUserId = applicationUser.Id,
+                    ApplicationUserFullName = applicationUser.FullName
+                };
+
+                if (!CampaignUserExists(campaignUser.Id))
+                {
+                    _context.Add(campaignUser);
+                    await _context.SaveChangesAsync();
+                    if (applicationUser.UserRole == "NewUser")
                     {
-                        try
+                        applicationUser.UserRole = "Employee";
+                        await _userManager.AddToRoleAsync(applicationUser, "Employee");
+                        applicationUser.ManagerID = currentUser.Id;
+                        if (ModelState.IsValid)
                         {
-                            _context.Update(applicationUser);
-                            await _context.SaveChangesAsync();
-                        }
-                        catch (DbUpdateConcurrencyException)
-                        {
-                            if (!ApplicationUserExists(applicationUser.Id))
+                            try
                             {
-                                return NotFound();
+                                _context.Update(applicationUser);
+                                await _context.SaveChangesAsync();
                             }
-                            else
+                            catch (DbUpdateConcurrencyException)
                             {
-                                throw;
+                                if (!ApplicationUserExists(applicationUser.Id))
+                                {
+                                    
+                                }
+                                else
+                                {
+                                    throw;
+                                }
                             }
                         }
                     }
                 }
             }
-            return RedirectToAction(nameof(Index));
         }
 
 
 
         
-        [HttpGet]
         public IActionResult Accounts()
         {
             return View();
         }
 
-        [HttpGet]
         public async Task<IActionResult> AccountChangeCompany()
         {
             var currentUser = await GetCurrentUserAsync();
@@ -600,7 +667,7 @@ namespace Metrict.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AccountChangeCompany(int companyId)
+        public async Task AccountChangeCompany(int companyId)
         {
             var currentUser = await GetCurrentUserAsync();
             var applicationUser = await _context.ApplicationUsers.FindAsync(currentUser.Id);
@@ -621,26 +688,23 @@ namespace Metrict.Controllers
                 {
                     if (!ApplicationUserExists(applicationUser.Id))
                     {
-                        return NotFound();
+
                     }
                     else
                     {
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
-            return View(applicationUser);
         }
 
-        [HttpGet]
         public IActionResult AccountInviteUsers()
         {
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> AccountInviteUsers(string email)
+        public async Task AccountInviteUsers(string email)
         {
             var currentUser = await GetCurrentUserAsync();
             var comp = await _context.Company.FirstOrDefaultAsync(x => x.Id == currentUser.CompanyId);
@@ -650,21 +714,16 @@ namespace Metrict.Controllers
 
                 await _emailSender.SendEmailAsync(email, "Sign up for Metrict",
                     $"Start using Metrict for {comp.Name} <a href='{callbackUrl}'>clicking here</a>.");
-
-                return RedirectToAction(nameof(Index));
             }
-
-            return View();
         }
 
-        [HttpGet]
         public IActionResult AccountInviteUsersBulk()
         {
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> AccountInviteUsersBulk(string commaSeparatedEmail)
+        public async Task AccountInviteUsersBulk(string commaSeparatedEmail)
         {
             var currentUser = await GetCurrentUserAsync();
             var comp = await _context.Company.FirstOrDefaultAsync(x => x.Id == currentUser.CompanyId);
@@ -678,13 +737,11 @@ namespace Metrict.Controllers
                     $"Start using Metrict for {comp.Name} <a href='{callbackUrl}'>clicking here</a>.");
 
             }
-            return RedirectToAction(nameof(Index));
         }
 
 
 
 
-        [HttpGet]
         public async Task<IActionResult> ManagerGetAllEmployeeReports()
         {
             var currentUser = await GetCurrentUserAsync();
@@ -692,7 +749,6 @@ namespace Metrict.Controllers
             return Json(new { data = await _context.Reports.Where(x => x.ManagerId == currentUser.Id).ToListAsync() });
         }
 
-        [HttpGet]
         public async Task<IActionResult> ManagerNewManager()
         {
             var currentUser = await GetCurrentUserAsync();
@@ -706,53 +762,48 @@ namespace Metrict.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ManagerNewManager(string applicationUserId)
+        public async Task ManagerNewManager(string applicationUserId)
         {
             var currentUser = await GetCurrentUserAsync();
-            if (currentUser.UserRole == "NewUser" || currentUser.UserRole == "Employee" || currentUser.UserRole == "TeamLead")
+            if (currentUser.UserRole == "Manager" || currentUser.UserRole == "Executive" || currentUser.UserRole == "Administrator")
             {
-                return Json(new { success = false, message = "Error During Promotion" });
-            }
-
-            var applicationUser = await _context.ApplicationUsers.FindAsync(applicationUserId);
-            if (applicationUser.UserActive != true)
-            {
-                applicationUser.UserActive = true;
-                _context.ApplicationUsers.Update(applicationUser);
-                await _context.SaveChangesAsync();
-            }
-
-            applicationUser.UserRole = "Manager";
-            await _userManager.AddToRoleAsync(applicationUser, "Manager");
-            if (currentUser.UserRole == "Executive" || currentUser.UserRole == "Administrator")
-            {
-                applicationUser.ManagerID = currentUser.Id;
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
+                var applicationUser = await _context.ApplicationUsers.FindAsync(applicationUserId);
+                if (applicationUser.UserActive != true)
                 {
-                    _context.Update(applicationUser);
+                    applicationUser.UserActive = true;
+                    _context.ApplicationUsers.Update(applicationUser);
                     await _context.SaveChangesAsync();
                 }
-                catch (DbUpdateConcurrencyException)
+
+                applicationUser.UserRole = "Manager";
+                await _userManager.AddToRoleAsync(applicationUser, "Manager");
+                if (currentUser.UserRole == "Executive" || currentUser.UserRole == "Administrator")
                 {
-                    if (!ApplicationUserExists(applicationUser.Id))
+                    applicationUser.ManagerID = currentUser.Id;
+                }
+
+                if (ModelState.IsValid)
+                {
+                    try
                     {
-                        return NotFound();
+                        _context.Update(applicationUser);
+                        await _context.SaveChangesAsync();
                     }
-                    else
+                    catch (DbUpdateConcurrencyException)
                     {
-                        throw;
+                        if (!ApplicationUserExists(applicationUser.Id))
+                        {
+                            
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
                 }
             }
-            //return Json(new { success = true, message = "Manager Promotion Successful" });
-            return RedirectToAction("Index");
         }
 
-        [HttpGet]
         public async Task<IActionResult> ManagerReassignEmployeeManager()
         {
             var currentUser = await GetCurrentUserAsync();
@@ -770,40 +821,33 @@ namespace Metrict.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ManagerReassignEmployeeManager(string applicationUserId, string managerId)
+        public async Task ManagerReassignEmployeeManager(string applicationUserId, string managerId)
         {
             var currentUser = await GetCurrentUserAsync();
-            if (currentUser.UserRole == "NewUser" || currentUser.UserRole == "Employee" || currentUser.UserRole == "TeamLead")
+            if (currentUser.UserRole == "Manager" || currentUser.UserRole == "Executive" || currentUser.UserRole == "Administrator")
             {
-                return Json(new { success = false, message = "Error During Assignment" });
-            }
-            var applicationUser = await _context.ApplicationUsers.FindAsync(applicationUserId);
-            var managerUser = await _context.ApplicationUsers.FindAsync(managerId);
-            if (managerUser.UserRole == "NewUser" || managerUser.UserRole == "Employee" || managerUser.UserRole == "TeamLead")
-            {
-                return Json(new { success = false, message = "Error During Assignment" });
-            }
+                var applicationUser = await _context.ApplicationUsers.FindAsync(applicationUserId);
+                var managerUser = await _context.ApplicationUsers.FindAsync(managerId);
+                if (managerUser.UserRole == "Manager" || managerUser.UserRole == "Executive" || managerUser.UserRole == "Administrator")
+                {
+                    if (managerUser.UserActive == true)
+                    {
+                        if (applicationUser.UserActive != true)
+                        {
+                            applicationUser.UserActive = true;
+                        }
 
-            if (managerUser.UserActive != true)
-            {
-                return Json(new { success = false, message = "That manager is not active" });
+                        if (applicationUser.UserRole == "NewUser")
+                        {
+                            applicationUser.UserRole = "Employee";
+                            await _userManager.AddToRoleAsync(applicationUser, "Employee");
+                        }
+                        applicationUser.ManagerID = managerUser.Id;
+                        _context.ApplicationUsers.Update(applicationUser);
+                        await _context.SaveChangesAsync();
+                    }
+                }
             }
-
-            if (applicationUser.UserActive != true)
-            {
-                applicationUser.UserActive = true;
-            }
-            if (applicationUser.UserRole == "NewUser")
-            {
-                applicationUser.UserRole = "Employee";
-                await _userManager.AddToRoleAsync(applicationUser, "Employee");
-            }
-            applicationUser.ManagerID = managerUser.Id;
-            _context.ApplicationUsers.Update(applicationUser);
-            await _context.SaveChangesAsync();
-
-            //return Json(new { success = true, message = "Manager Assignment Successful" });
-            return RedirectToAction("Index");
         }
 
 
@@ -814,7 +858,6 @@ namespace Metrict.Controllers
             return View();
         }
 
-        [HttpGet]
         public async Task<IActionResult> TaskCreate()
         {
             EmployeeTask = new EmployeeTask();
@@ -829,7 +872,6 @@ namespace Metrict.Controllers
             return View(EmployeeTask);
         }
 
-        [HttpGet]
         public async Task<IActionResult> TaskEdit(int? id)
         {
 
@@ -848,46 +890,40 @@ namespace Metrict.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> TaskUpsert(EmployeeTask employeeTask)
+        public async Task TaskUpsert(EmployeeTask employeeTask)
         {
             var currentUser = await GetCurrentUserAsync();
-            if (currentUser.UserActive == false)
+            if (currentUser.UserActive == true)
             {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                if (employeeTask.Id == 0)
+                if (ModelState.IsValid)
                 {
-                    var empUser = await _context.ApplicationUsers.FirstOrDefaultAsync(x => x.Id == employeeTask.ApplicationUserId);
+                    if (employeeTask.Id == 0)
+                    {
+                        var empUser = await _context.ApplicationUsers.FirstOrDefaultAsync(x => x.Id == employeeTask.ApplicationUserId);
 
-                    employeeTask.ManagerFullName = currentUser.FullName;
-                    employeeTask.ManagerUserName = currentUser.UserName;
-                    employeeTask.ApplicationUserFullName = empUser.FullName;
-                    employeeTask.ApplicationUserName = empUser.UserName;
-                    employeeTask.Comments = employeeTask.ManagerUserName + "<br />" + DateTime.Now + "<br />" + employeeTask.Comments + "<br />" + "<br />";
-                    employeeTask.Status = StatusOfTask.Assigned;
-                    employeeTask.CompanyId = currentUser.CompanyId;
-                    employeeTask.AssignedDate = DateTime.Now;
-                    _context.EmployeeTask.Add(employeeTask);
-                    _context.SaveChanges();
-                    return RedirectToAction("Index");
+                        employeeTask.ManagerFullName = currentUser.FullName;
+                        employeeTask.ManagerUserName = currentUser.UserName;
+                        employeeTask.ApplicationUserFullName = empUser.FullName;
+                        employeeTask.ApplicationUserName = empUser.UserName;
+                        employeeTask.Comments = employeeTask.ManagerUserName + "<br />" + DateTime.Now + "<br />" + employeeTask.Comments + "<br />" + "<br />";
+                        employeeTask.Status = StatusOfTask.Assigned;
+                        employeeTask.CompanyId = currentUser.CompanyId;
+                        employeeTask.AssignedDate = DateTime.Now;
+                        _context.EmployeeTask.Add(employeeTask);
+                        _context.SaveChanges();
+                    }
+                    else
+                    {
+                        var empTask = await _context.EmployeeTask.FirstOrDefaultAsync(x => x.Id == employeeTask.Id);
+
+                        empTask.TaskDescription = employeeTask.TaskDescription;
+                        empTask.Severity = employeeTask.Severity;
+                        empTask.DueDate = employeeTask.DueDate;
+                        _context.EmployeeTask.Update(empTask);
+                        _context.SaveChanges();
+                    }
                 }
-                else
-                {
-                    var empTask = await _context.EmployeeTask.FirstAsync(x => x.Id == employeeTask.Id);
-
-                    empTask.TaskDescription = employeeTask.TaskDescription;
-                    empTask.Severity = employeeTask.Severity;
-                    empTask.DueDate = employeeTask.DueDate;
-                    _context.EmployeeTask.Update(empTask);
-                    _context.SaveChanges();
-                    return RedirectToAction("Index");
-                }
-
             }
-            return View();
         }
 
         [HttpPost]
@@ -909,7 +945,6 @@ namespace Metrict.Controllers
             return NotFound();
         }
 
-        [HttpGet]
         public async Task<IActionResult> TaskDetails(int? id)
         {
             if (id == 0)
@@ -989,13 +1024,13 @@ namespace Metrict.Controllers
         private bool CorrectAppUser(string userId, int reportId)
         {
             var tempReport = _context.Reports.FirstOrDefault(x => x.Id == reportId);
-            if (tempReport.ApplicationUserId != userId)
+            if (tempReport.ApplicationUserId == userId)
             {
-                return false;
+                return true;
             }
             else
             {
-                return true;
+                return false;
             }
         }
         

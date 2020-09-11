@@ -39,7 +39,7 @@
                             <th>
                                 @if (item.ApplicationUser.UserActive == false)
                                 {
-                                    <form asp-action="ActivateUser" method="post">
+                                    <form asp-action="CampaignActivateUser" method="post">
                                         <input type="hidden" id="campaignId" name="campaignId" value="@item.CampaignId" />
                                         <input type="hidden" id="applicationUsersId" name="applicationUserId" value="@item.ApplicationUserId" />
                                         <input type="submit" class='btn btn-success text-white buttonpad' value="Activate User" />
@@ -49,7 +49,7 @@
                                 }
                                 @if (item.ApplicationUser.UserActive == true)
                                 {
-                                    <form asp-action="DeactivateUser" method="post">
+                                    <form asp-action="CampaignDeactivateUser" method="post">
                                         <input type="hidden" id="campaignId" name="campaignId" value="@item.CampaignId" />
                                         <input type="hidden" id="applicationUsersId" name="applicationUserId" value="@item.ApplicationUserId" />
                                         <input type="submit" class='btn btn-danger text-white buttonpad' value="Deactivate User" />
@@ -57,7 +57,7 @@
 
                                     //<a asp-action="DeactivateUser" class='btn btn-danger text-white'>Deactivate User</a>
                                 }
-                                <form asp-action="RemoveUser" method="post">
+                                <form asp-action="CampaignRemoveUser" method="post">
                                     <input type="hidden" id="campaignId" name="campaignId" value="@item.CampaignId" />
                                     <input type="hidden" id="applicationUsersId" name="applicationUserId" value="@item.ApplicationUserId" />
                                     <input type="submit" class='btn btn-danger text-white buttonpad' value="Remove User" />

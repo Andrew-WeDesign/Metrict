@@ -14,13 +14,13 @@
     <h1>Send invites in bulk</h1>
     <p>Enter email addresses separated by commas.</p>
     <div class="border container" style="padding:30px;">
-        <form asp-action="AccountInviteUsers" method="post">
+        <form asp-action="AccountInviteUsers" method="post" id="noRedirectInviteUsersBulk">
             <div class="form-group row">
                 <div class="col-3">
                     <label for="email"></label>
                 </div>
                 <div class="col-6">
-                    <textarea name="commaSeparatedEmail" class="form-control" rows="4" cols="50"/>
+                    <textarea name="commaSeparatedEmail" class="form-control" rows="4" cols="50" />
                 </div>
             </div>
             <div class="form-group row">
@@ -30,11 +30,35 @@
                     </button>
                 </div>
                 <div class="col-3">
-                    <a href="#" onclick="BackToAccounts()" class="btn btn-danger form-control">Back to my account</a>
+                    <a href="#" class="btn btn-danger form-control" id="inviteUsersBulkAndBackToAccounts">Back to my account</a>
                 </div>
             </div>
         </form>
     </div>
+
+    <script>
+        $(function () {
+            var frm = $('#noRedirectInviteUsersBulk')
+            frm.submit(function (e) {
+                e.preventDefault();
+                $.ajax({
+                    type: frm.attr('method'),
+                    url: frm.attr('action'),
+                    data: frm.serialize(),
+                    success: function (data) {
+                        toastr.success("success");
+                    }
+                });
+
+            });
+            $('#inviteUsersBulkAndBackToAccounts').click(function () {
+                function showMain() {
+                    $("#main").load("/Dashboard/Accounts");
+                }
+                setTimeout(showMain, 1000)
+            });
+        });
+    </script>
 
 </body>
 </html>

@@ -24,7 +24,7 @@
     <hr />
     <div class="row">
         <div class="col-md-12">
-            <form asp-controller="Dashboard" asp-action="TaskUpsert" method="post">
+            <form asp-controller="Dashboard" asp-action="TaskUpsert" method="post" id="noRedirectTaskCreate">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="ManagerId" value="@ViewBag.UserId" />
                 <input type="hidden" asp-for="ManagerReply" value="false" />
@@ -55,15 +55,38 @@
                     <span asp-validation-for="DueDate" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-primary" />
+                    <input type="submit" value="Create" class="btn btn-primary" id="taskCreateAndBackToList" />
                 </div>
             </form>
+            <div class="form-group">
+                <a href="#" onclick="TasksMain()" class="btn btn-primary btn-lg">Back to List</a>
+            </div>
         </div>
     </div>
 
-    <div>
-        <a href="#" onclick="TasksMain()" class="btn btn-primary btn-lg">Back to List</a>
-    </div>
+    <script>
+        $(function () {
+            var frm = $('#noRedirectTaskCreate')
+            frm.submit(function (e){
+                e.preventDefault();
+                $.ajax({
+                    type: frm.attr('method'),
+                    url: frm.attr('action'),
+                    data: frm.serialize(),
+                    success: function (data) {
+                        toastr.success("success");
+                    }
+                });
+                
+            });
+            $('#taskCreateAndBackToList').click(function () {
+                function showMain() {
+                    $("#main").load("/Dashboard/Tasks");
+                }
+                setTimeout(showMain, 1000)
+            });
+        });
+    </script>
 
 </body>
 </html>

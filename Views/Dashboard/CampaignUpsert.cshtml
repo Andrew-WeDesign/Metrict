@@ -16,7 +16,7 @@
     <br />
 
     <div class="border container" style="padding:30px;">
-        <form asp-controller="Dashboard" asp-action="CampaignUpsert" method="post">
+        <form asp-controller="Dashboard" asp-action="CampaignUpsert" method="post" id="noRedirectCampaignCreate">
             @if (Model.Id != 0)
             {
                 <input type="hidden" asp-for="Id" />
@@ -215,7 +215,7 @@
             </div>
             <div class="form-group row">
                 <div class="col-3 offset-3">
-                    <button type="submit" class="btn btn-primary form-control">
+                    <button type="submit" class="btn btn-primary form-control" id="campaignCreateAndBackToList">
                         @(Model.Id != 0 ? "Update" : "Create")
                     </button>
                 </div>
@@ -226,8 +226,32 @@
         </form>
     </div>
 
+    <script>
+        $(function () {
+            var frm = $('#noRedirectCampaignCreate')
+            frm.submit(function (e) {
+                e.preventDefault();
+                $.ajax({
+                    type: frm.attr('method'),
+                    url: frm.attr('action'),
+                    data: frm.serialize(),
+                    success: function (data) {
+                        toastr.success("success");
+                    }
+                });
+
+            });
+            $('#campaignCreateAndBackToList').click(function () {
+                function showMain() {
+                    $("#main").load("/Dashboard/Campaigns");
+                }
+                setTimeout(showMain, 1000)
+            });
+        });
+    </script>
+
     @*<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>*@
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>*@
 
 </body>
 </html>
