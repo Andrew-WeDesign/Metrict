@@ -1,36 +1,32 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Repos\\Metrict\\Metrict\\Metrict.csproj": {}
+    "C:\\Users\\ace92\\Documents\\Develop\\Metrict\\Metrict.csproj": {}
   },
   "projects": {
-    "E:\\Repos\\Metrict\\Metrict\\Metrict.csproj": {
+    "C:\\Users\\ace92\\Documents\\Develop\\Metrict\\Metrict.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Repos\\Metrict\\Metrict\\Metrict.csproj",
+        "projectUniqueName": "C:\\Users\\ace92\\Documents\\Develop\\Metrict\\Metrict.csproj",
         "projectName": "Metrict",
-        "projectPath": "E:\\Repos\\Metrict\\Metrict\\Metrict.csproj",
-        "packagesPath": "C:\\Users\\Andy\\.nuget\\packages\\",
-        "outputPath": "E:\\Repos\\Metrict\\Metrict\\obj\\",
+        "projectPath": "C:\\Users\\ace92\\Documents\\Develop\\Metrict\\Metrict.csproj",
+        "packagesPath": "C:\\Users\\ace92\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\ace92\\Documents\\Develop\\Metrict\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\",
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Andy\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\ace92\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "netcoreapp3.1"
+          "net6.0"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "netcoreapp3.1": {
+          "net6.0": {
+            "targetAlias": "net6.0",
             "projectReferences": {}
           }
         },
@@ -41,11 +37,12 @@
         }
       },
       "frameworks": {
-        "netcoreapp3.1": {
+        "net6.0": {
+          "targetAlias": "net6.0",
           "dependencies": {
             "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[3.1.7, )"
+              "version": "[6.0.2, )"
             },
             "Microsoft.AspNetCore.Identity": {
               "target": "Package",
@@ -53,37 +50,37 @@
             },
             "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[3.1.7, )"
+              "version": "[6.0.2, )"
             },
             "Microsoft.AspNetCore.Identity.UI": {
               "target": "Package",
-              "version": "[3.1.7, )"
+              "version": "[6.0.2, )"
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[3.1.7, )"
+              "version": "[6.0.2, )"
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
-              "version": "[3.1.7, )"
+              "version": "[6.0.2, )"
             },
             "Microsoft.EntityFrameworkCore.Tools": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[3.1.7, )"
+              "version": "[6.0.2, )"
             },
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
-              "version": "[3.1.4, )"
+              "version": "[6.0.2, )"
             },
             "Microsoft.Windows.Compatibility": {
               "target": "Package",
-              "version": "[3.1.1, )"
+              "version": "[6.0.0, )"
             },
             "SendGrid": {
               "target": "Package",
-              "version": "[9.20.0, )"
+              "version": "[9.25.3, )"
             }
           },
           "imports": [
@@ -104,7 +101,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     }
